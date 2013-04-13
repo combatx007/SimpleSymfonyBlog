@@ -1,0 +1,12 @@
+/.idea/
+/nbproject/
+/app/bootstrap.php.cache
+/app/cache/*
+/app/logs/*
+/vendor/
+/web/bundles/
+/composer.phar
+/bin/doctrine*
+!*.gitkeep
+!*.gitignore
+*.php~
