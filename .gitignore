@@ -1,0 +1,10 @@
+.travis.yml
+composer.phar
+vendor/*
+/UPGRADE.md
+/README.md
+/UPGRADE-2.2.md
+/README.md
+/UPGRADE.md
+/UPGRADE-2.2.md
+/LICENSE
