@@ -7,4 +7,9 @@
 /UPGRADE.md
 /UPGRADE-2.2.md
 /LICENSE
-/vendor
+/web/bundles/
+/app/bootstrap.php.cache
+/app/cache/*
+/app/logs/*
+/vendor/
+/composer.phar
