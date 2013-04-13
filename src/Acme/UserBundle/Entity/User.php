@@ -1,4 +1,5 @@
-<?php
+﻿<?php
+
 namespace Acme\UserBundle\Entity;
 
 use FOS\UserBundle\Entity\User as BaseUser;
