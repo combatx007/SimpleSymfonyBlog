@@ -16,11 +16,11 @@ security:
             pattern: ^/
             form_login:
                 csrf_provider: form.csrf_provider
-                check_path:  /user/login_check
-                login_path:  /user/
-                default_target_path:  /user/
+                check_path:  /login_check
+                login_path:  /
+                default_target_path:  /
             logout:
-                path:   /user/logout
+                path:   /logout
             remember_me:
                 key:    "%secret%"
                 name:   SIMPLE_BLOG_REMEMBER_ME
