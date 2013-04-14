@@ -10,3 +10,4 @@
 !*.gitkeep
 !*.gitignore
 *.php~
+/app/config/parameters.yml
