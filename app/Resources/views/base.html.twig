@@ -1,13 +1,99 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8" />
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
-        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
-    </head>
-    <body>
-        {% block body %}{% endblock %}
-        {% block javascripts %}{% endblock %}
-    </body>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Simple-blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- Le styles -->
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <style type="text/css">
+        body {
+            padding-top: 60px;
+            padding-bottom: 40px;
+        }
+        .sidebar-nav {
+            padding: 9px 0;
+        }
+    </style>
+    <link href="css/bootstrap-responsive.css" rel="stylesheet">
+</head>
+<body>
+<div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container-fluid">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+            <a class="brand" href="#">Simple-blog</a>
+            <div class="nav-collapse collapse">
+                <p class="navbar-text pull-right">
+                    Вы зашли как <a href="#" class="navbar-link">Логин</a>
+                </p>
+                <ul class="nav">
+                    <li class="active"><a href="#">Главная</a></li>
+                    <li><a href="#about">О нас</a></li>
+                    <li><a href="#contact">Контакты</a></li>
+                    <li><form class="navbar-search pull-left">
+                            <input type="text" class="search-query" placeholder="Search">
+                        </form></li>
+                </ul>
+            </div><!--/.nav-collapse -->
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="span12">
+            <div class="hero-unit">
+                <table>
+                    <tr>
+                        <td width="950"><p><h1>Привет, друг!</h1></p>
+                            <p><small>Simple-blog - учебный проект на фреймворке Symfony 2</small></p>
+                        </td>
+                        <td><p><img src="img/symfony_logo.png"></p></td></tr>
+                </table>
+
+            </div>
+            <div class="span12">
+                <div class="span9">
+                    <section id="overview">
+                        <div class="page-header">
+                            <h1>Simple-blogs.tk - блог на Symfony 2</h1>
+                        </div>
+
+                        <h3>Блог находится в разработке</h3>
+                        <p>Если вы хотите принять участие в разработке веб приложений на Симфони, добро пожаловать к нам
+                        <h3>Что такое Symfony 2</h3>
+                        <p> свободный каркас, написанный на PHP5, который использует паттерн Model-View-Controller (MVC).
+                            Symfony предлагает быструю разработку и управление веб-приложениями, позволяет легко решать рутинные задачи веб-программиста. Работает только с PHP 5 (>=5.2.4 и желательно не 5.2.9 для Symfony 1.4, >=5.3.2 для Symfony 2). Имеет поддержку множества баз данных (MySQL, PostgreSQL, SQLite или любая другая PDO-совместимая СУБД). Информация о реляционной базе данных в проекте должна быть связана с объектной моделью. Это можно сделать при помощи ORM инструмента. Symfony поставляется с двумя из них: Propel и Doctrine.
+                    </section>
+
+                </div>
+                <div class="span3">
+
+                    <ul class="nav nav-list">
+                        <li class="nav-header">Меню</li>
+                        <li class="active"><a href="#">На главную</a></li>
+                        <li><a href="#">Ссылка</a></li>
+                        <li><a href="#">Ссылка</a></li>
+                        <li><a href="#">Ссылка</a></li>
+                        <li><a href="#">Ссылка</a></li>
+                        <li class="nav-header">Облако тегов</li>
+                        <li>разные теги бла бла бла</li>
+                        <li class="nav-header">3 блок</li>
+                        <li>не помню для чего</li>
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="js/bootstrap.js"></script>
+<script type="text/javascript" src="js/bootstrap.min.js"></script>
+</body>
 </html>
