@@ -11,7 +11,7 @@
     {% endblock %}
     <!-- Le styles -->
     {% block stylesheets %}
-    <link href="css/bootstrap.css" rel="stylesheet">
+    <link href="{{ app.request.basePath }}/css/bootstrap.css" rel="stylesheet">
     <style type="text/css">
     body {
     padding-top: 60px;
@@ -21,7 +21,7 @@
     padding: 9px 0;
     }
     </style>
-    <link href="css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="{{ app.request.basePath }}/css/bootstrap-responsive.css" rel="stylesheet">
     {% endblock %}
 </head>
 {% endblock %}
@@ -72,7 +72,7 @@
                         <td width="600"><p><h1>Привет, друг!</h1></p>
                             <p><small>Simple-blog - учебный проект на фреймворке Symfony 2</small></p>
                         </td>
-                        <td><p><img src="img/symfony_logo.png"></p></td></tr>
+                        <td><p><img src="{{ app.request.basePath }}/img/symfony_logo.png"></p></td></tr>
                 </table>
             </div>
             </div>
