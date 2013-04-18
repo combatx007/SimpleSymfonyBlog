@@ -1,25 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
+{% block head %}
 <head>
+    {% block meta %}
     <meta charset="utf-8">
-    <title>Simple-blog</title>
+    <title>{% block title %}Simple-blog{% endblock %}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
+    {% endblock %}
     <!-- Le styles -->
+    {% block stylesheets %}
     <link href="css/bootstrap.css" rel="stylesheet">
     <style type="text/css">
-        body {
-            padding-top: 60px;
-            padding-bottom: 40px;
-        }
-        .sidebar-nav {
-            padding: 9px 0;
-        }
+    body {
+    padding-top: 60px;
+    padding-bottom: 40px;
+    }
+    .sidebar-nav {
+    padding: 9px 0;
+    }
     </style>
     <link href="css/bootstrap-responsive.css" rel="stylesheet">
+    {% endblock %}
 </head>
+{% endblock %}
+{% block body %}
 <body>
+{% block navbar %}
 <div class="navbar navbar-inverse navbar-fixed-top">
     <div class="navbar-inner">
         <div class="container-fluid">
@@ -31,7 +39,14 @@
             <a class="brand" href="#">Simple-blog</a>
             <div class="nav-collapse collapse">
                 <p class="navbar-text pull-right">
-                    Вы зашли как <a href="#" class="navbar-link">Логин</a>
+                    {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+                        {{ 'layout.logged_in_as'|trans({'%username%': app.user.username}, 'FOSUserBundle') }} |
+                        <a href="{{ path('fos_user_security_logout') }}">
+                            {{ 'layout.logout'|trans({}, 'FOSUserBundle') }}
+                        </a>
+                    {% else %}
+                        <a href="{{ path('fos_user_security_login') }}">{{ 'layout.login'|trans({}, 'FOSUserBundle') }}</a>
+                    {% endif %}
                 </p>
                 <ul class="nav">
                     <li class="active"><a href="#">Главная</a></li>
@@ -45,8 +60,11 @@
         </div>
     </div>
 </div>
+{% endblock %}
+{% block container %}
 <div class="container-fluid offset1">
     <div class="row-fluid">
+        {% block header %}
         <div class="span11">
             <div class="hero-unit">
                 <table>
@@ -56,9 +74,12 @@
                         </td>
                         <td><p><img src="img/symfony_logo.png"></p></td></tr>
                 </table>
-
             </div>
+            </div>
+        {% endblock %}
+        {% block content %}
             <div class="span11">
+                {% block text %}
                 <div class="span8">
                     <div class="page-header">
                         <h1>Simple-blogs - блог на Symfony 2</h1>
@@ -100,7 +121,9 @@
                         </ul>
                     </div>
                 </div>
-                <div class="span3 offset1">
+                {% endblock %}
+                {% block sidebar %}
+                <div class="span2 offset1">
 
                     <ul class="nav nav-list">
                         <li class="nav-header">Меню</li>
@@ -115,13 +138,22 @@
                         <li>не помню для чего</li>
 
                     </ul>
+
                 </div>
+                {% endblock %}
             </div>
         </div>
+    <div class="row-fluid span11">
+        <ul class="nav nav-list span11">
+            <li class="divider"></li>
+            <li>Simple-blog - учебный блог</li>
+        </ul>
 
     </div>
+    </div>
 </div>
-<script type="text/javascript" src="js/bootstrap.js"></script>
-<script type="text/javascript" src="js/bootstrap.min.js"></script>
+{% endblock %}
 </body>
+{% endblock %}
 </html>
+{% endblock %}
