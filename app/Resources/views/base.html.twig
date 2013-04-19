@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<html lang="en">
 {% block head %}
 <head>
     {% block meta %}
@@ -38,16 +37,22 @@
             </a>
             <a class="brand" href="#">Simple-blog</a>
             <div class="nav-collapse collapse">
-                <p class="navbar-text pull-right">
-                    {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+                <ul class="navbar-text pull-right">
+                   <li>{% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
                         {{ 'layout.logged_in_as'|trans({'%username%': app.user.username}, 'FOSUserBundle') }} |
-                        <a href="{{ path('fos_user_security_logout') }}">
+                         <a href="{{ path('fos_user_security_logout') }}">
                             {{ 'layout.logout'|trans({}, 'FOSUserBundle') }}
                         </a>
                     {% else %}
                         <a href="{{ path('fos_user_security_login') }}">{{ 'layout.login'|trans({}, 'FOSUserBundle') }}</a>
                     {% endif %}
-                </p>
+                </li>
+                <li>
+                    <a href="/register">
+                        Register
+                    </a>
+                </li>
+                    </ul>
                 <ul class="nav">
                     <li class="active"><a href="#">Главная</a></li>
                     <li><a href="#about">О нас</a></li>

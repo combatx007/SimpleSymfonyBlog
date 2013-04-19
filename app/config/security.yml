@@ -17,7 +17,7 @@ security:
             form_login:
                 csrf_provider: form.csrf_provider
                 check_path:  /login_check
-                login_path:  /
+                login_path:  /login
                 default_target_path:  /
             logout:
                 path:   /logout
