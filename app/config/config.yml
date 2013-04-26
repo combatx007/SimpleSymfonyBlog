@@ -70,4 +70,4 @@ fos_user:
     user_class: Acme\UserBundle\Entity\User
     registration:
         confirmation:
-        enabled:    false # change to true for required email confirmation
+        enabled: false # change to true for required email confirmation
