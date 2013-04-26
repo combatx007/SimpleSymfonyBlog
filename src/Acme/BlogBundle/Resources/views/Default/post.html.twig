@@ -1,0 +1,15 @@
+{% extends '::base.html.twig' %}
+                {% block text %}
+                    <div class="span8">
+                    <div class="page-header">
+                        <h1>{{ post.title }}</h1>
+
+                        <div class="pull-right"><small><time datetime="{{ post.created|date('c') }}">{{ post.created|date('l, F j, Y') }}</time></small></div>
+                    </div>
+                        <section id="overview">
+                        {{ post.post }}
+                            </section>
+                        </div>
+                    {% endblock %}
+{% block pagination %}
+{% endblock %}

@@ -91,7 +91,7 @@
                     </div>
                     <section id="overview">
                         {% for post in posts %}
-                            <h2>{{ post.title}}</h2>
+                            <h2><a href="{{ app.request.basePath }}/post/{{ post.id }}">{{ post.title}}</a></h2>
                             <p>{{ post.post }}</p>
                             <div class="pull-right"><small><time datetime="{{ post.created|date('c') }}">{{ post.created|date('l, F j, Y') }}</time></small></div>
 

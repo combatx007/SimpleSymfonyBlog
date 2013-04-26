@@ -32,4 +32,12 @@ class DefaultController extends Controller
         return $this->render('AcmeBlogBundle:Default:page.html.twig', array('posts' => $posts,'pages' => $count_pages,
         'id' => $id));
     }
+
+    public function postAction($id)
+    {
+        $em = $this->getDoctrine()->getEntityManager();
+        $post = $em->getRepository('AcmeBlogBundle:Post')->findOneBy(array('id'=>$id));
+        return $this->render('AcmeBlogBundle:Default:post.html.twig', array('post' => $post,
+            'id' => $id));
+    }
 }
