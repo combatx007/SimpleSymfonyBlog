@@ -54,7 +54,7 @@
                 </li>
                     </ul>
                 <ul class="nav">
-                    <li class="active"><a href={{ app.request.basePath }}/">Главная</a></li>
+                    <li class="active"><a href="{{ app.request.basePath }}/">Главная</a></li>
                     <li><a href="{{ app.request.basePath }}/about">О нас</a></li>
                     <li><a href="{{ app.request.basePath }}/contact">Контакты</a></li>
                     <li><form class="navbar-search pull-left">
@@ -100,13 +100,13 @@
                     </section>
                     <div class="pagination">
                         <ul>
-                            <li><a href="{{ app.request.basePath }}/page/1">Start</a></li>
-                            <li><a href="{{ app.request.basePath }}/page/{{ id - 1 }}">Prev</a></li>
+                            {% block pagination %}
                             {% for i in 1..10 %}
                             <li><a href="{{ app.request.basePath }}/page/{{ i }}">{{ i }}</a></li>
                             {% endfor %}
                             <li><a href="{{ app.request.basePath }}/page/{{ id + 1 }}">Next</a></li>
                             <li><a href="{{ app.request.basePath }}/page/{{ pages }}">End</a></li>
+                            {% endblock %}
                         </ul>
                     </div>
                 </div>
