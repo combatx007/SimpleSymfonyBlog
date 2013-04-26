@@ -1,3 +1,8 @@
 acme_blog_homepage:
     pattern:  /
     defaults: { _controller: AcmeBlogBundle:Default:index }
+acme_blog_page:
+    pattern:  /page/{id}
+    defaults: { _controller: AcmeBlogBundle:Default:page }
+    requirements:
+            page:  \d+

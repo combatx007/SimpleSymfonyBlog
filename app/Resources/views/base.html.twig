@@ -54,9 +54,9 @@
                 </li>
                     </ul>
                 <ul class="nav">
-                    <li class="active"><a href="#">Главная</a></li>
-                    <li><a href="#about">О нас</a></li>
-                    <li><a href="#contact">Контакты</a></li>
+                    <li class="active"><a href={{ app.request.basePath }}/">Главная</a></li>
+                    <li><a href="{{ app.request.basePath }}/about">О нас</a></li>
+                    <li><a href="{{ app.request.basePath }}/contact">Контакты</a></li>
                     <li><form class="navbar-search pull-left">
                             <input type="text" class="search-query" placeholder="Search">
                         </form></li>
@@ -89,40 +89,24 @@
                     <div class="page-header">
                         <h1>Simple-blogs - блог на Symfony 2</h1>
                     </div>
-                    <ul class="nav nav-list">
                     <section id="overview">
+                        {% for post in posts %}
+                            <h2>{{ post.title}}</h2>
+                            <p>{{ post.post }}</p>
 
-                        <div class="page-header">
-                            <h3>Symfony Live Portland 2013: The Schedule has finally been published!</h3>
-                        </div>
-                        The schedule for the Symfony Live conference in Portland has just been published! Have a look at the great schedule and register now to the Symfony Live Portland 2013!
-                         </section>
-                        <li class="divider"></li>
-                    <section id="overview">
-
-                        <div class="page-header">
-                            <h3>A week of symfony #328 (8->14 April 2013)</h3>
-                        </div>
-                        This week, the Symfony project introduced Debug to its growing family of components. In addition, a code sprint for Symfony 2.3 took place to boost the development of the upcoming first LTS version of Symfony2.
+                        {% else %}
+                            Пока в блоге нет статей.
+                        {% endfor %}
                     </section>
-                        <li class="divider"></li>
-                    <section id="overview">
-
-                        <div class="page-header">
-                            <h3>Code Sprint for Symfony 2.3</h3>
-                        </div>
-                        Be prepared for the first Symfony 2.3 code sprint.
-                    </section>
-                        <li class="divider"></li>
-                    </ul>
                     <div class="pagination">
                         <ul>
-                            <li><a href="#">Prev</a></li>
-                            <li><a href="#">1</a></li>
-                            <li><a href="#">2</a></li>
-                            <li><a href="#">3</a></li>
-                            <li><a href="#">4</a></li>
-                            <li><a href="#">Next</a></li>
+                            <li><a href="{{ app.request.basePath }}/page/1">Start</a></li>
+                            <li><a href="{{ app.request.basePath }}/page/{{ id - 1 }}">Prev</a></li>
+                            {% for i in 1..10 %}
+                            <li><a href="{{ app.request.basePath }}/page/{{ i }}">{{ i }}</a></li>
+                            {% endfor %}
+                            <li><a href="{{ app.request.basePath }}/page/{{ id + 1 }}">Next</a></li>
+                            <li><a href="{{ app.request.basePath }}/page/{{ pages }}">End</a></li>
                         </ul>
                     </div>
                 </div>
@@ -132,11 +116,11 @@
 
                     <ul class="nav nav-list">
                         <li class="nav-header">Меню</li>
-                        <li class="active"><a href="#">На главную</a></li>
-                        <li><a href="#">Ссылка</a></li>
-                        <li><a href="#">Ссылка</a></li>
-                        <li><a href="#">Ссылка</a></li>
-                        <li><a href="#">Ссылка</a></li>
+                        <li class="active"><a href="{{ app.request.basePath }}/">На главную</a></li>
+                        <li><a href="{{ app.request.basePath }}/">Ссылка</a></li>
+                        <li><a href="{{ app.request.basePath }}/">Ссылка</a></li>
+                        <li><a href="{{ app.request.basePath }}/">Ссылка</a></li>
+                        <li><a href="{{ app.request.basePath }}/">Ссылка</a></li>
                         <li class="nav-header">Облако тегов</li>
                         <li>разные теги бла бла бла</li>
                         <li class="nav-header">3 блок</li>
