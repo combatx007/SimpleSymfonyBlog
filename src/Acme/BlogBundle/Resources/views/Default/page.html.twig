@@ -4,9 +4,15 @@
     {% if id not in [1] %}
     <li><a href="{{ app.request.basePath }}/page/{{ id - 1 }}">Prev</a></li>
     {% endif %}
-    {% for i in 1..10 %}
-        <li><a href="{{ app.request.basePath }}/page/{{ i }}">{{ i }}</a></li>
-    {% endfor %}
+    {% if pages < 5 %}
+        {% for i in 1..pages %}
+            <li><a href="{{ app.request.basePath }}/page/{{ i }}">{{ i }}</a></li>
+        {% endfor %}
+    {% else %}
+        {% for i in 1..5 %}
+            <li><a href="{{ app.request.basePath }}/page/{{ i }}">{{ i }}</a></li>
+        {% endfor %}
+    {% endif %}
     <li><a href="{{ app.request.basePath }}/page/{{ id + 1 }}">Next</a></li>
     <li><a href="{{ app.request.basePath }}/page/{{ pages }}">End</a></li>
 {% endblock %}

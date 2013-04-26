@@ -93,6 +93,7 @@
                         {% for post in posts %}
                             <h2>{{ post.title}}</h2>
                             <p>{{ post.post }}</p>
+                            <div class="pull-right"><small><time datetime="{{ post.created|date('c') }}">{{ post.created|date('l, F j, Y') }}</time></small></div>
 
                         {% else %}
                             Пока в блоге нет статей.
@@ -101,9 +102,15 @@
                     <div class="pagination">
                         <ul>
                             {% block pagination %}
-                            {% for i in 1..10 %}
-                            <li><a href="{{ app.request.basePath }}/page/{{ i }}">{{ i }}</a></li>
-                            {% endfor %}
+                                {% if pages < 5 %}
+                                    {% for i in 1..pages %}
+                                        <li><a href="{{ app.request.basePath }}/page/{{ i }}">{{ i }}</a></li>
+                                    {% endfor %}
+                                {% else %}
+                                    {% for i in 1..5 %}
+                                        <li><a href="{{ app.request.basePath }}/page/{{ i }}">{{ i }}</a></li>
+                                    {% endfor %}
+                                {% endif %}
                             <li><a href="{{ app.request.basePath }}/page/{{ id + 1 }}">Next</a></li>
                             <li><a href="{{ app.request.basePath }}/page/{{ pages }}">End</a></li>
                             {% endblock %}

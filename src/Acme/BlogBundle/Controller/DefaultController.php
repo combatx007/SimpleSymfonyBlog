@@ -17,7 +17,7 @@ class DefaultController extends Controller
         $count_pages = ceil($count / $limit);
         $posts = $this->getDoctrine()->getRepository('AcmeBlogBundle:Post');
         $posts = $posts->findBy(array(),array('updated'=>'DESC'),3,0);
-        return $this->render('AcmeBlogBundle:Default:index.html.twig',array('posts' => $posts, 'id' => '1', 'pages' => '$count_pages'));
+        return $this->render('AcmeBlogBundle:Default:index.html.twig',array('posts' => $posts, 'id' => '1', 'pages' => $count_pages));
     }
 
     public function pageAction($id)
