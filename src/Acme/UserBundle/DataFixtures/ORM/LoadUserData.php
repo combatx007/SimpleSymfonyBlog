@@ -21,7 +21,7 @@ class LoadUserData implements FixtureInterface
         $userAdmin->setEmailCanonical('312@mail.ru');
         $userAdmin->addRole('ROLE_SUPER_ADMIN');
         $manager->persist($userAdmin);
-        $manager->flush();
+
         $user = new User();
         $user->setUsername('user');
         $user->setPassword('test');
@@ -29,6 +29,7 @@ class LoadUserData implements FixtureInterface
         $user->setEmailCanonical('3122@mail.ru');
         $user->addRole('ROLE_DEFAULT');
         $manager->persist($user);
+
         $manager->flush();
     }
 }

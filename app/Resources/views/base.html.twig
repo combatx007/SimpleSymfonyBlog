@@ -24,132 +24,147 @@
     {% endblock %}
 </head>
 {% endblock %}
-{% block body %}
-<body>
-{% block navbar %}
-<div class="navbar navbar-inverse navbar-fixed-top">
-    <div class="navbar-inner">
+  {% block body %}
+  <body>
+    {% block navbar %}
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
         <div class="container-fluid">
-            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </a>
-            <a class="brand" href="#">Simple-blog</a>
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a class="brand" href="{{ app.request.basePath }}/">Simple-blog</a>
             <div class="nav-collapse collapse">
-                <ul class="navbar-text pull-right">
-                   <li>{% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-                        {{ 'layout.logged_in_as'|trans({'%username%': app.user.username}, 'FOSUserBundle') }} |
-                         <a href="{{ path('fos_user_security_logout') }}">
-                            {{ 'layout.logout'|trans({}, 'FOSUserBundle') }}
-                        </a>
+              <ul class="navbar-text pull-right">
+                <li>{% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+                    {{ 'layout.logged_in_as'|trans({'%username%': app.user.username}, 'FOSUserBundle') }} |
+                    <a href="{{ path('fos_user_security_logout') }}">
+                    {{ 'layout.logout'|trans({}, 'FOSUserBundle') }}
+                    </a>
                     {% else %}
-                        <a href="{{ path('fos_user_security_login') }}">{{ 'layout.login'|trans({}, 'FOSUserBundle') }}</a>
+                    <a href="{{ path('fos_user_security_login') }}">{{ 'layout.login'|trans({}, 'FOSUserBundle') }}</a>
                     {% endif %}
                 </li>
                 <li>
                     <a href="{{ app.request.basePath }}/register">
-                        Регистрация
+                    Регистрация
                     </a>
                 </li>
-                    </ul>
-                <ul class="nav">
-                    <li class="active"><a href="{{ app.request.basePath }}/">Главная</a></li>
-                    <li><a href="{{ app.request.basePath }}/about">О нас</a></li>
-                    <li><a href="{{ app.request.basePath }}/contact">Контакты</a></li>
-                    <li><form class="navbar-search pull-left">
-                            <input type="text" class="search-query" placeholder="Search">
-                        </form></li>
-                </ul>
-            </div><!--/.nav-collapse -->
+              </ul>
+              <ul class="nav">
+                <li class="active"><a href="{{ app.request.basePath }}/">Главная</a></li>
+                <li><a href="{{ app.request.basePath }}/about">О нас</a></li>
+                <li><a href="{{ app.request.basePath }}/contact">Контакты</a></li>
+                <li>
+                  <form class="navbar-search pull-left">
+                  <input type="text" class="search-query" placeholder="Search">
+                  </form>
+                </li>
+              </ul>
+          </div>
         </div>
+      </div>
     </div>
-</div>
-{% endblock %}
-{% block container %}
-<div class="container-fluid offset1">
-    <div class="row-fluid">
+    {% endblock %}
+    {% block container %}
+    <div class="container-fluid offset1">
+      <div class="row-fluid">
         {% block header %}
         <div class="span11">
-            <div class="hero-unit">
-                <table>
-                    <tr>
-                        <td width="600"><p><h1>Привет, друг!</h1></p>
-                            <p><small>Simple-blog - учебный проект на фреймворке Symfony 2</small></p>
-                        </td>
-                        <td><p><img src="{{ app.request.basePath }}/img/symfony_logo.png"></p></td></tr>
-                </table>
-            </div>
-            </div>
+          <div class="hero-unit">
+            <table>
+              <tr>
+                <td width="600"><p><h1>Привет, друг!</h1></p>
+                  <p><small>Simple-blog - учебный проект на фреймворке Symfony 2</small></p>
+                </td>
+                <td>
+                  <p><img src="{{ app.request.basePath }}/img/symfony_logo.png"></p>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
         {% endblock %}
         {% block content %}
-            <div class="span11">
-                {% block text %}
-                <div class="span8">
-                    <div class="page-header">
-                        <h1>Simple-blogs - блог на Symfony 2</h1>
-                    </div>
-                    <section id="overview">
-                        {% for post in posts %}
-                            <h2><a href="{{ app.request.basePath }}/post/{{ post.id }}">{{ post.title}}</a></h2>
-                            <p>{{ post.post }}</p>
-                            <div class="pull-right"><small><time datetime="{{ post.created|date('c') }}">{{ post.created|date('l, F j, Y') }}</time></small></div>
+          <div class="span11">
 
-                        {% else %}
-                            Пока в блоге нет статей.
-                        {% endfor %}
-                    </section>
-                    <div class="pagination">
-                        <ul>
-                            {% block pagination %}
-                                {% if pages < 5 %}
-                                    {% for i in 1..pages %}
-                                        <li><a href="{{ app.request.basePath }}/page/{{ i }}">{{ i }}</a></li>
-                                    {% endfor %}
-                                {% else %}
-                                    {% for i in 1..5 %}
-                                        <li><a href="{{ app.request.basePath }}/page/{{ i }}">{{ i }}</a></li>
-                                    {% endfor %}
-                                {% endif %}
-                            <li><a href="{{ app.request.basePath }}/page/{{ id + 1 }}">Next</a></li>
-                            <li><a href="{{ app.request.basePath }}/page/{{ pages }}">End</a></li>
-                            {% endblock %}
-                        </ul>
-                    </div>
-                </div>
+            {% block text %}
+            <div class="span8">
+
+              <div class="page-header">
+                <h1>Simple-blogs - блог на Symfony 2</h1>
+              </div>
+
+              <section id="overview">
+              {% for post in posts %}
+              <h2><a href="{{ app.request.basePath }}/post/{{ post.id }}">{{ post.title}}</a></h2>
+              <p>{{ post.post }}</p>
+              <div class="pull-right">
+                <small><time datetime="{{ post.created|date('c') }}">{{ post.created|date('l, F j, Y') }}</time></small>
+              </div>
+
+              {% else %}
+              Пока в блоге нет статей.
+
+              {% endfor %}
+              </section>
+
+              <div class="pagination">
+                <ul>
+                {% block pagination %}
+                  {% if pages < 5 %}
+
+                    {% for i in 1..pages %}
+                    <li><a href="{{ app.request.basePath }}/page/{{ i }}">{{ i }}</a></li>
+                    {% endfor %}
+
+                  {% else %}
+                    {% for i in 1..5 %}
+                    <li><a href="{{ app.request.basePath }}/page/{{ i }}">{{ i }}</a></li>
+                    {% endfor %}
+
+                  {% endif %}
+
+                  <li><a href="{{ app.request.basePath }}/page/{{ id + 1 }}">Next</a></li>
+                  <li><a href="{{ app.request.basePath }}/page/{{ pages }}">End</a></li>
                 {% endblock %}
-                {% block sidebar %}
-                <div class="span2 offset1">
-
-                    <ul class="nav nav-list">
-                        <li class="nav-header">Меню</li>
-                        <li class="active"><a href="{{ app.request.basePath }}/">На главную</a></li>
-                        <li><a href="{{ app.request.basePath }}/">Ссылка</a></li>
-                        <li><a href="{{ app.request.basePath }}/">Ссылка</a></li>
-                        <li><a href="{{ app.request.basePath }}/">Ссылка</a></li>
-                        <li><a href="{{ app.request.basePath }}/">Ссылка</a></li>
-                        <li class="nav-header">Облако тегов</li>
-                        <li>разные теги бла бла бла</li>
-                        <li class="nav-header">3 блок</li>
-                        <li>не помню для чего</li>
-
-                    </ul>
-
-                </div>
-                {% endblock %}
+                </ul>
+              </div>
             </div>
-        </div>
+            {% endblock %}
+            {% block sidebar %}
+              <div class="span2 offset1">
+
+                <ul class="nav nav-list">
+                  <li class="nav-header">Меню</li>
+                  <li class="active"><a href="{{ app.request.basePath }}/">На главную</a></li>
+                  <li><a href="{{ app.request.basePath }}/">Ссылка</a></li>
+                  <li><a href="{{ app.request.basePath }}/">Ссылка</a></li>
+                  <li><a href="{{ app.request.basePath }}/">Ссылка</a></li>
+                  <li><a href="{{ app.request.basePath }}/">Ссылка</a></li>
+                  <li class="nav-header">Облако тегов</li>
+                  <li>разные теги бла бла бла</li>
+                  <li class="nav-header">3 блок</li>
+                  <li>не помню для чего</li>
+                </ul>
+              </div>
+              {% endblock %}
+      </div>
+    </div>
+
     <div class="row-fluid span11">
-        <ul class="nav nav-list span11">
-            <li class="divider"></li>
-            <li>Simple-blog - учебный блог</li>
-        </ul>
+      <ul class="nav nav-list span11">
+        <li class="divider"></li>
+        <li>Simple-blog - учебный блог</li>
+      </ul>
 
     </div>
     </div>
-</div>
-{% endblock %}
-</body>
-{% endblock %}
+    </div>
+    {% endblock %}
+  </body>
+  {% endblock %}
 </html>
 {% endblock %}

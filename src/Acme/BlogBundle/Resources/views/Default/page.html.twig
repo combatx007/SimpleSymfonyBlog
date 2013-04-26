@@ -1,18 +1,33 @@
 {% extends '::base.html.twig' %}
-{% block pagination %}
+  {% block pagination %}
     <li><a href="{{ app.request.basePath }}/page/1">Start</a></li>
+
     {% if id not in [1] %}
-    <li><a href="{{ app.request.basePath }}/page/{{ id - 1 }}">Prev</a></li>
+
+    <li>
+      <a href="{{ app.request.basePath }}/page/{{ id - 1 }}">Prev</a>
+    </li>
+
     {% endif %}
+
     {% if pages < 5 %}
-        {% for i in 1..pages %}
-            <li><a href="{{ app.request.basePath }}/page/{{ i }}">{{ i }}</a></li>
-        {% endfor %}
+
+      {% for i in 1..pages %}
+        <li>
+          <a href="{{ app.request.basePath }}/page/{{ i }}">{{ i }}</a>
+        </li>
+      {% endfor %}
+
     {% else %}
-        {% for i in 1..5 %}
-            <li><a href="{{ app.request.basePath }}/page/{{ i }}">{{ i }}</a></li>
-        {% endfor %}
+
+      {% for i in 1..5 %}
+        <li>
+          <a href="{{ app.request.basePath }}/page/{{ i }}">{{ i }}</a>
+        </li>
+      {% endfor %}
+
     {% endif %}
+
     <li><a href="{{ app.request.basePath }}/page/{{ id + 1 }}">Next</a></li>
     <li><a href="{{ app.request.basePath }}/page/{{ pages }}">End</a></li>
-{% endblock %}
+  {% endblock %}

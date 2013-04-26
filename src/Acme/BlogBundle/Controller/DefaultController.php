@@ -10,34 +10,57 @@ class DefaultController extends Controller
 {
     public function indexAction()
     {
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
         $query = $em->createQuery('SELECT COUNT(u.id) FROM Acme\BlogBundle\Entity\Post u');
-        $count = $query->getSingleScalarResult();
+
         $limit = 3;
-        $count_pages = ceil($count / $limit);
-        $posts = $this->getDoctrine()->getRepository('AcmeBlogBundle:Post');
-        $posts = $posts->findBy(array(),array('updated'=>'DESC'),3,0);
-        return $this->render('AcmeBlogBundle:Default:index.html.twig',array('posts' => $posts, 'id' => '1', 'pages' => $count_pages));
+        $count_pages = ceil($query->getSingleScalarResult() / $limit);
+        $posts = $em->getRepository('AcmeBlogBundle:Post')->findBy(
+            [],
+            ['updated' => 'DESC'],
+            $limit,
+            0
+        );
+
+        return $this->render('AcmeBlogBundle:Default:page.html.twig', [
+            'posts' => $posts,
+            'pages' => $count_pages,
+            'id' => '1'
+        ]);
     }
 
     public function pageAction($id)
     {
-        $em = $this->getDoctrine()->getEntityManager();
-        $query = $em->createQuery('SELECT COUNT(u.id) FROM Acme\BlogBundle\Entity\Post u');
-        $count = $query->getSingleScalarResult();
+        $em = $this->getDoctrine()->getManager();
+        $query = $em->createQuery('SELECT COUNT(p.id) FROM AcmeBlogBundle:Post p');
+
         $limit = 3;
-        $count_pages = ceil($count / $limit);
+        $count_pages = ceil($query->getSingleScalarResult() / $limit);
         $offset = ($id - 1) * $limit;
-        $posts = $em->getRepository('AcmeBlogBundle:Post')->findBy(array(), array('updated'=>'DESC'), $limit, $offset);
-        return $this->render('AcmeBlogBundle:Default:page.html.twig', array('posts' => $posts,'pages' => $count_pages,
-        'id' => $id));
+
+        $posts = $em->getRepository('AcmeBlogBundle:Post')->findBy(
+            [],
+            ['updated' => 'DESC'],
+            $limit,
+            $offset
+        );
+
+        return $this->render('AcmeBlogBundle:Default:page.html.twig', [
+            'posts' => $posts,
+            'pages' => $count_pages,
+            'id' => $id
+        ]);
     }
 
     public function postAction($id)
     {
-        $em = $this->getDoctrine()->getEntityManager();
-        $post = $em->getRepository('AcmeBlogBundle:Post')->findOneBy(array('id'=>$id));
-        return $this->render('AcmeBlogBundle:Default:post.html.twig', array('post' => $post,
-            'id' => $id));
+        $em = $this->getDoctrine()->getManager();
+        $post = $em->getRepository('AcmeBlogBundle:Post')->findOneBy(
+            ['id'=>$id]
+        );
+        return $this->render('AcmeBlogBundle:Default:post.html.twig', [
+            'post' => $post,
+            'id' => $id
+        ]);
     }
 }

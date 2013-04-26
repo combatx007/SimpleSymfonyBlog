@@ -22,7 +22,6 @@ The schedule for the Symfony Live conference in Portland has just been published
         $postOne->setCreated(new \DateTime());
         $postOne->setUpdated(new \DateTime());
         $manager->persist($postOne);
-        $manager->flush();
 
         $postToo = new Post();
         $postToo->setTitle('A week of symfony');
@@ -31,7 +30,6 @@ The schedule for the Symfony Live conference in Portland has just been published
         $postToo->setCreated(new \DateTime());
         $postToo->setUpdated(new \DateTime());
         $manager->persist($postToo);
-        $manager->flush();
 
         $postThree = new Post();
         $postThree->setTitle('Sharing Objects between Fixtures');
@@ -41,7 +39,6 @@ The Doctrine fixtures library handles this easily by allowing you to specify the
         $postThree->setCreated(new \DateTime());
         $postThree->setUpdated(new \DateTime());
         $manager->persist($postThree);
-        $manager->flush();
 
         $postFour = new Post();
         $postFour->setTitle('Simple-blog - учебный проект на симфони');
@@ -51,7 +48,6 @@ The schedule for the Symfony Live conference in Portland has just been published
         $postFour->setCreated(new \DateTime());
         $postFour->setUpdated(new \DateTime());
         $manager->persist($postFour);
-        $manager->flush();
 
         $postFive = new Post();
         $postFive->setTitle('A week of symfony');
@@ -60,6 +56,7 @@ The schedule for the Symfony Live conference in Portland has just been published
         $postFive->setCreated(new \DateTime());
         $postFive->setUpdated(new \DateTime());
         $manager->persist($postFive);
+
         $manager->flush();
     }
 }
