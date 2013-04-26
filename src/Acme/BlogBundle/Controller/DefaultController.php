@@ -11,7 +11,7 @@ class DefaultController extends Controller
     public function indexAction()
     {
         $em = $this->getDoctrine()->getManager();
-        $query = $em->createQuery('SELECT COUNT(u.id) FROM Acme\BlogBundle\Entity\Post u');
+        $query = $em->createQuery('SELECT COUNT(p.id) FROM AcmeBlogBundle:Post p');
 
         $limit = 3;
         $count_pages = ceil($query->getSingleScalarResult() / $limit);
@@ -58,6 +58,7 @@ class DefaultController extends Controller
         $post = $em->getRepository('AcmeBlogBundle:Post')->findOneBy(
             ['id'=>$id]
         );
+
         return $this->render('AcmeBlogBundle:Default:post.html.twig', [
             'post' => $post,
             'id' => $id

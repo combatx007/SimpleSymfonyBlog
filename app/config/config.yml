@@ -69,5 +69,5 @@ fos_user:
     firewall_name: main
     user_class: Acme\UserBundle\Entity\User
     registration:
-            confirmation:
-                enabled:    false # change to true for required email confirmation
+        confirmation:
+        enabled:    false # change to true for required email confirmation
