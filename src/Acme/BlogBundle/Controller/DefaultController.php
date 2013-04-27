@@ -4,6 +4,7 @@ namespace Acme\BlogBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Acme\BlogBundle\Entity\Post;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class DefaultController extends Controller
@@ -64,4 +65,34 @@ class DefaultController extends Controller
             'id' => $id
         ]);
     }
+
+    public function post_editAction($id, Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $post = $em->getRepository('AcmeBlogBundle:Post')->findOneBy(
+            ['id'=>$id]
+        );
+
+        $task = new Post();
+        $task->setTitle($post->getTitle());
+        $task->setUser($post->getUser());
+        $task->setPost($post->getPost());
+        $task->setUpdated(new \DateTime('today'));
+        $task->setCreated($post->getCreated());
+
+        $form = $this->createFormBuilder($task)
+            ->add('title', 'text')
+            ->add('post', 'textarea')
+            ->getForm();
+
+        if ($request->getMethod() == 'POST') {
+            $form->bindRequest($request);
+        }
+
+        return $this->render('AcmeBlogBundle:Default:post_edit.html.twig', [
+            'form' => $form->createView(),
+            'post' => $task,
+        ]);
+    }
+
 }

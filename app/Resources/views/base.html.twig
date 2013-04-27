@@ -97,20 +97,30 @@
                 <h1>Simple-blogs - блог на Symfony 2</h1>
               </div>
 
-              <section id="overview">
               {% for post in posts %}
-              <h2><a href="{{ app.request.basePath }}/post/{{ post.id }}">{{ post.title}}</a></h2>
+              <div>
+              <p class="pull-left"><h2><a href="{{ app.request.basePath }}/post/{{ post.id }}">{{ post.title}}</a></h2></p>
               <p>{{ post.post }}</p>
-              <div class="pull-left"><small>{{ post.user }}</small>
-              </div>
-              <div class="pull-right">
-                <small><time datetime="{{ post.created|date('c') }}">{{ post.created|date('l, F j, Y') }}</time></small>
-              </div><br>
 
+              <p>
+                  <small>{{ post.user }}</small>
+              </p>
+              <p class="pull-right">
+                <small><time datetime="{{ post.created|date('c') }}">{{ post.created|date('l, F j, Y') }}</time></small>
+              </p>
+              <p class="pull-left">
+                  {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+                      {% if post.user.id == app.user.id %}
+                          <a href="{{ app.request.basePath }}/post/edit/{{ post.id }}">Редактировать</a>
+                      {% endif %}
+                  {% endif %}
+              </p>
+              <br>
+              </div>
               {% else %}
               Пока в блоге нет статей.
               {% endfor %}
-              </section>
+
 
               <div class="pagination">
                 <ul>

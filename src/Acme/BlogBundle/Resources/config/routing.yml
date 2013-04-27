@@ -11,3 +11,16 @@ acme_blog_post:
     defaults: { _controller: AcmeBlogBundle:Default:post }
     requirements:
         id:  \d+
+acme_blog_post_add:
+    pattern:  /post/add
+    defaults: { _controller: AcmeBlogBundle:Default:post_add }
+
+acme_blog_post_add:
+    pattern:  /post/add
+    defaults: { _controller: AcmeBlogBundle:Default:post_add }
+
+acme_blog_post_edit:
+    pattern:  /post/edit/{id}
+    defaults: { _controller: AcmeBlogBundle:Default:post_edit, id : 1 }
+    requirements:
+        id:  \d+
