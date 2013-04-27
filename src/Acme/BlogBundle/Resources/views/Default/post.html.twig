@@ -5,6 +5,8 @@
   <div class="span8">
   <div class="page-header">
     <h1>{{ post.title }}</h1>
+    <div class="pull-left"><small>{{ post.user }}</small>
+    </div>
     <div class="pull-right">
       <small><time datetime="{{ post.created|date('c') }}">{{ post.created|date('l, F j, Y') }}</time></small>
     </div>
