@@ -22,7 +22,7 @@ class AppKernel extends Kernel
             new FOS\UserBundle\FOSUserBundle(),
             new Acme\BlogBundle\AcmeBlogBundle(),
             new Acme\UserBundle\AcmeUserBundle(),
-            new Acme\FixturesBundle\AcmeFixturesBundle(),
+            new Acme\DataFixturesBundle\AcmeDataFixturesBundle(),
             new RaulFraile\Bundle\LadybugBundle\RaulFraileLadybugBundle(),
         );
 
