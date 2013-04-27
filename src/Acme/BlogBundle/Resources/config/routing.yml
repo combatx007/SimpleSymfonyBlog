@@ -21,6 +21,9 @@ acme_blog_post_add:
 
 acme_blog_post_edit:
     pattern:  /post/edit/{id}
-    defaults: { _controller: AcmeBlogBundle:Default:post_edit, id : 1 }
+    defaults: { _controller: AcmeBlogBundle:Default:edit, id : 1 }
     requirements:
         id:  \d+
+acme_blog_post_form:
+    path: /succes
+    defaults: { _controller: AcmeBlogBundle:Default:success }

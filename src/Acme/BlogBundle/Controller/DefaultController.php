@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Acme\BlogBundle\Entity\Post;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Acme\BlogBundle\Form\Type\PostFormType;
 
 class DefaultController extends Controller
 {
@@ -66,7 +67,7 @@ class DefaultController extends Controller
         ]);
     }
 
-    public function post_editAction($id, Request $request)
+    public function editAction($id, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
         $post = $em->getRepository('AcmeBlogBundle:Post')->findOneBy(
@@ -80,19 +81,26 @@ class DefaultController extends Controller
         $task->setUpdated(new \DateTime('today'));
         $task->setCreated($post->getCreated());
 
-        $form = $this->createFormBuilder($task)
-            ->add('title', 'text')
-            ->add('post', 'textarea')
-            ->getForm();
+        $form = $this->createForm(new PostFormType(), $post);
 
-        if ($request->getMethod() == 'POST') {
-            $form->bindRequest($request);
+        if ($request->isMethod('POST')) {
+            if ($request->request->has('post')) {
+                $form->bind($request);
+                if ($form->isValid()) {
+                    $edit_form = $form->getData();
+                    $em->persist($edit_form);
+                    $em->flush();
+                }
+            }
         }
 
         return $this->render('AcmeBlogBundle:Default:post_edit.html.twig', [
             'form' => $form->createView(),
-            'post' => $task,
         ]);
     }
 
+    public function successAction($id)
+    {
+        return $this->render('AcmeBlogBundle:Default:succes.html.twig');
+    }
 }
