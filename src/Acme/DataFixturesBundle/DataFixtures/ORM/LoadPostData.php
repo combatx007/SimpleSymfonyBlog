@@ -1,5 +1,5 @@
 <?php
-namespace Acme\FixturesBundle\ORM;
+namespace Acme\DataFixturesBundle\ORM;
 
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
