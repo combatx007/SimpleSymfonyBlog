@@ -3,7 +3,7 @@
 
 {% block text %}
         <div class="span8">
-                <form action="{{ path('acme_blog_post_form') }}" method="post" {{ form_enctype(form) }}>
+                <form action="{{ path('acme_blog_post_edit') }}/{{ id }}" method="post" {{ form_enctype(form) }}>
                     {{ form_widget(form) }}
                     <input type="submit" />
                 </form>

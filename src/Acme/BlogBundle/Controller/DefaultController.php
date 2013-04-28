@@ -79,17 +79,23 @@ class DefaultController extends Controller
         $task->setUser($post->getUser());
         $task->setPost($post->getPost());
         $task->setUpdated(new \DateTime('today'));
-        $task->setCreated($post->getCreated());
+        $task->setCreated(new \DateTime('today'));
 
-        $form = $this->createForm(new PostFormType());
-        $form->bind($request);
-        if ($form->isValid()) {
-            $em->persist($form->getData());
-            $em->flush();
+        $form = $this->createForm(new PostFormType(), $post);
+        if ($request->getMethod() == 'POST') {
+            $form->bind($request);
+            if ($form->isValid()) {
+                $em->persist($form->getData());
+                $em->flush();
+                $this->get('session')->setFlash('id', $id);
+                return $this->redirect($this->generateUrl('acme_blog_post', [$id]));
+            }
         }
+
 
         return $this->render('AcmeBlogBundle:Default:post_edit.html.twig', [
             'form' => $form->createView(),
+            'id' => $id,
         ]);
     }
 

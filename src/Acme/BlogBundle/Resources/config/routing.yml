@@ -8,13 +8,9 @@ acme_blog_page:
         id:  \d+
 acme_blog_post:
     pattern:  /post/{id}
-    defaults: { _controller: AcmeBlogBundle:Default:post }
+    defaults: { _controller: AcmeBlogBundle:Default:post, id : 1 }
     requirements:
         id:  \d+
-acme_blog_post_add:
-    pattern:  /post/add
-    defaults: { _controller: AcmeBlogBundle:Default:post_add }
-
 acme_blog_post_add:
     pattern:  /post/add
     defaults: { _controller: AcmeBlogBundle:Default:post_add }
