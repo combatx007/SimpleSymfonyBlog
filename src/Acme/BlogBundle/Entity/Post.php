@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Events;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
+use Doctrine\ORM\Mapping\HasLifecycleCallBacks;
 /**
  * @ORM\Entity
  * @ORM\HasLifecycleCallBacks
