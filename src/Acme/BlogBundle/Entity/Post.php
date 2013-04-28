@@ -9,8 +9,7 @@ use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use Doctrine\ORM\Mapping\HasLifecycleCallBacks;
 /**
- * @ORM\Entity
- * @ORM\HasLifecycleCallBacks
+ * @ORM\Entity HasLifecycleCallBacks
  * @ORM\Table(name="post")
 */
 class Post
