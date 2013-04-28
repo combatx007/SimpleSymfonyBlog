@@ -5,10 +5,12 @@ use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\DependencyInjection\ContainerAware;
 use Acme\BlogBundle\Entity\Post;
 use Acme\UserBundle\Entity\User;
+use FOS\UserBundle\Model\UserManager;
 
-class LoadPostData implements FixtureInterface
+class LoadPostData extends ContainerAware implements FixtureInterface
 {
     /**
      * {@inheritDoc}
@@ -17,17 +19,21 @@ class LoadPostData implements FixtureInterface
     {
         $userAdmin = new User();
         $userAdmin->setUsername('admin');
-        $userAdmin->setPassword('test');
+        $encoder = $this->container->get('security.encoder_factory')->getEncoder($userAdmin);
+        $userAdmin->setPassword($encoder->encodePassword('123', $userAdmin->getSalt()));
         $userAdmin->setEmail('312@mail.ru');
         $userAdmin->setEmailCanonical('312@mail.ru');
+        $userAdmin->setEnabled(true);
         $userAdmin->addRole('ROLE_SUPER_ADMIN');
         $manager->persist($userAdmin);
 
         $user = new User();
         $user->setUsername('user');
-        $user->setPassword('test');
+        $encoder = $this->container->get('security.encoder_factory')->getEncoder($userAdmin);
+        $user->setPassword($encoder->encodePassword('123', $user->getSalt()));
         $user->setEmail('3122@mail.ru');
         $user->setEmailCanonical('3122@mail.ru');
+        $user->setEnabled(true);
         $user->addRole('ROLE_DEFAULT');
         $manager->persist($user);
 

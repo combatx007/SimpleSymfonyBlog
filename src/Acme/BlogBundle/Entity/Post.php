@@ -4,11 +4,14 @@
 namespace Acme\BlogBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-
+use Doctrine\ORM\Events;
+use Doctrine\Common\EventSubscriber;
+use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 /**
  * @ORM\Entity
+ * @ORM\HasLifecycleCallBacks
  * @ORM\Table(name="post")
- */
+*/
 class Post
 {
     /**
@@ -44,6 +47,20 @@ class Post
      */
     protected $updated;
 
+    public function __construct()
+    {
+        $this->created = new \DateTime();
+        $this->updated = new \DateTime();
+    }
+
+    /**
+     * @ORM\PreUpdate
+     */
+    public function doStuffOnPreUpdate()
+    {
+        $this->setCreated($this->getCreated());
+        $this->setUpdated($this->getUpdated());
+    }
 
     /**
      * Get id
