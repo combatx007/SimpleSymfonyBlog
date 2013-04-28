@@ -1,30 +1,47 @@
 {% extends '::base.html.twig' %}
 
 {% block pagination %}
-    <li><a href="{{ app.request.basePath }}/page/1">Start</a></li>
+    <li>
+        <a href="{{ app.request.basePath }}/page/1">Start</a>
+    </li>
 
     {% if id not in [1] %}
-        <li><a href="{{ app.request.basePath }}/page/{{ id - 1 }}">Prev</a></li>
+        <li>
+            <a href="{{ app.request.basePath }}/page/{{ id - 1 }}">Prev</a>
+        </li>
     {% endif %}
 
     {% if pages < 5 %}
         {% for i in 1..pages %}
-            <li><a href="{{ app.request.basePath }}/page/{{ i }}">{{ i }}</a></li>
+            <li>
+                <a href="{{ app.request.basePath }}/page/{{ i }}">{{ i }}</a>
+            </li>
         {% endfor %}
+
     {% else %}
+
         {% for i in 1..5 %}
-            <li><a href="{{ app.request.basePath }}/page/{{ i }}">{{ i }}</a></li>
+            <li>
+                <a href="{{ app.request.basePath }}/page/{{ i }}">{{ i }}</a>
+            </li>
         {% endfor %}
+
     {% endif %}
 
-    <li><a href="{{ app.request.basePath }}/page/{{ id + 1 }}">Next</a></li>
-    <li><a href="{{ app.request.basePath }}/page/{{ pages }}">End</a></li>
+    <li>
+        <a href="{{ app.request.basePath }}/page/{{ id + 1 }}">Next</a>
+    </li>
+    <li>
+        <a href="{{ app.request.basePath }}/page/{{ pages }}">End</a>
+    </li>
 {% endblock %}
+
 {% block sidebar %}
     <div class="span2 offset1">
         <ul class="nav nav-list">
             <li class="nav-header">Меню</li>
             <li class="active"><a href="{{ app.request.basePath }}/">На главную</a></li>
+
         {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
             <li><a href="{{ app.request.basePath }}/post/add">Добавить пост</a></li>
         {% endif %}

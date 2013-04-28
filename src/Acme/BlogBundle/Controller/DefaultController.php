@@ -84,11 +84,16 @@ class DefaultController extends Controller
         $form = $this->createForm(new PostFormType(), $post);
         if ($request->getMethod() == 'POST') {
             $form->bind($request);
+
             if ($form->isValid()) {
                 $em->persist($form->getData());
                 $em->flush();
                 $this->get('session')->setFlash('id', $id);
-                return $this->redirect($this->generateUrl('acme_blog_post', [$id]));
+
+                return $this->redirect($this->generateUrl(
+                    'acme_blog_post',
+                    [$id]
+                ));
             }
         }
 

@@ -99,52 +99,57 @@
 
               {% for post in posts %}
               <div>
-              <p class="pull-left"><h2><a href="{{ app.request.basePath }}/post/{{ post.id }}">{{ post.title}}</a></h2></p>
-              <p>{{ post.post }}</p>
+                    <p class="pull-left">
+                        <h2><a href="{{ app.request.basePath }}/post/{{ post.id }}">{{ post.title}}</a></h2>
+                    </p>
+                    <p>{{ post.post }}</p>
 
-              <p>
-                  <small>{{ post.user }}</small>
-              </p>
-              <p class="pull-right">
-                <small><time datetime="{{ post.created|date('c') }}">{{ post.created|date('l, F j, Y') }}</time></small>
-              </p>
-              <p class="pull-left">
-                  {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-                      {% if post.user.id == app.user.id %}
-                          <a href="{{ app.request.basePath }}/post/edit/{{ post.id }}">Редактировать</a>
-                      {% endif %}
-                  {% endif %}
-              </p>
-              <br>
+                    <p>
+                        <small>{{ post.user }}</small>
+                    </p>
+                    <p class="pull-right">
+                        <small>
+                            <time datetime="{{ post.created|date('c') }}">{{ post.created|date('l, F j, Y') }}</time>
+                        </small>
+                    </p>
+                    <p class="pull-left">
+                        {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+                            {% if post.user.id == app.user.id %}
+                                <a href="{{ app.request.basePath }}/post/edit/{{ post.id }}">Редактировать</a>
+                            {% endif %}
+                        {% endif %}
+                    </p>
+                    <br>
               </div>
               {% else %}
-              Пока в блоге нет статей.
+                    Пока в блоге нет статей.
               {% endfor %}
 
 
               <div class="pagination">
-                <ul>
-                {% block pagination %}
-                  {% if pages < 5 %}
+                    <ul>
+                        {% block pagination %}
+                            {% if pages < 5 %}
 
-                    {% for i in 1..pages %}
-                    <li><a href="{{ app.request.basePath }}/page/{{ i }}">{{ i }}</a></li>
-                    {% endfor %}
+                                {% for i in 1..pages %}
+                                    <li><a href="{{ app.request.basePath }}/page/{{ i }}">{{ i }}</a></li>
+                                {% endfor %}
 
-                  {% else %}
-                    {% for i in 1..5 %}
-                    <li><a href="{{ app.request.basePath }}/page/{{ i }}">{{ i }}</a></li>
-                    {% endfor %}
+                            {% else %}
+                                {% for i in 1..5 %}
+                                    <li><a href="{{ app.request.basePath }}/page/{{ i }}">{{ i }}</a></li>
+                                {% endfor %}
 
-                  {% endif %}
+                            {% endif %}
 
-                  <li><a href="{{ app.request.basePath }}/page/{{ id + 1 }}">Next</a></li>
-                  <li><a href="{{ app.request.basePath }}/page/{{ pages }}">End</a></li>
-                {% endblock %}
-                </ul>
+                                    <li><a href="{{ app.request.basePath }}/page/{{ id + 1 }}">Next</a></li>
+                                    <li><a href="{{ app.request.basePath }}/page/{{ pages }}">End</a></li>
+                        {% endblock %}
+                    </ul>
               </div>
             </div>
             {% endblock %}
+
             {% block sidebar %}
               <div class="span2 offset1">
 
