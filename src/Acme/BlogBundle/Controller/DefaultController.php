@@ -72,11 +72,6 @@ class DefaultController extends Controller
         $em = $this->getDoctrine()->getManager();
         $post = $em->find('AcmeBlogBundle:Post', $id);
 
-        $task = new Post();
-        $task->setTitle($post->getTitle());
-        $task->setUser($post->getUser());
-        $task->setPost($post->getPost());
-
         $form = $this->createForm(new PostFormType(), $post);
         if ($request->getMethod() == 'POST') {
             $form->bind($request);
