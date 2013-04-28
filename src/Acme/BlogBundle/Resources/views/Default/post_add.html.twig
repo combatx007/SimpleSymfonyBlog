@@ -1,0 +1,21 @@
+{% extends '::base.html.twig' %}
+
+
+{% block text %}
+    <div class="span8">
+        <div class="page-header">
+            <h1>Добавить пост</h1>
+        </div>
+        <form action="{{ path('acme_blog_post_add') }}" method="post" {{ form_enctype(form) }}>
+            {{ form_label(form.title, 'Заголовок', { 'attr': {'class': 'text-info'} }) }}
+            {{ form_widget(form.title, { 'attr': {'class': '.span8'} }) }}
+            {{ form_label(form.post, 'Пост', { 'attr': {'class': 'text-info'} }) }}
+            {{ form_widget(form.post, { 'attr': {'class': '.span8', 'rows': '10'} }) }}
+            {{ form_rest(form) }}
+            <input type="submit" class="btn btn-primary" />
+        </form>
+    </div>
+{% endblock %}
+
+{% block pagination %}
+{% endblock %}

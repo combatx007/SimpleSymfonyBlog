@@ -95,8 +95,28 @@ class DefaultController extends Controller
         ]);
     }
 
-    public function successAction($id)
+    public function addAction(Request $request)
     {
-        return $this->render('AcmeBlogBundle:Default:succes.html.twig');
+        $em = $this->getDoctrine()->getManager();
+        $post = new Post();
+
+        $form = $this->createForm(new PostFormType(), $post);
+        if ($request->getMethod() == 'POST') {
+            $form->bind($request);
+
+            if ($form->isValid()) {
+                $em->persist($form->getData());
+                $em->flush();
+
+                return $this->redirect($this->generateUrl(
+                    'acme_blog_homepage'
+                ));
+            }
+        }
+
+
+        return $this->render('AcmeBlogBundle:Default:post_add.html.twig', [
+            'form' => $form->createView(),
+        ]);
     }
 }

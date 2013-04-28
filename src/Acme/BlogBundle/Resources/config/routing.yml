@@ -13,7 +13,7 @@ acme_blog_post:
         id:  \d+
 acme_blog_post_add:
     pattern:  /post/add
-    defaults: { _controller: AcmeBlogBundle:Default:post_add }
+    defaults: { _controller: AcmeBlogBundle:Default:add }
 
 acme_blog_post_edit:
     pattern:  /post/edit/{id}
