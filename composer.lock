@@ -1,5 +1,9 @@
 {
-    "hash": "92fd4df4107f160d0c4282c339fdd66c",
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
+    ],
+    "hash": "51ec3d399256ef37afb92362bdda16d2",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -2232,7 +2236,7 @@
         "knplabs/knp-paginator-bundle": 20
     },
     "platform": {
-        "php": ">=5.3.3"
+        "php": ">=5.4.1"
     },
     "platform-dev": [
 
