@@ -187,4 +187,27 @@ class Comment
     {
         return $this->posts;
     }
+
+    /**
+     * Set post
+     *
+     * @param \Acme\BlogBundle\Entity\Post $post
+     * @return Comment
+     */
+    public function setPost(\Acme\BlogBundle\Entity\Post $post = null)
+    {
+        $this->post = $post;
+    
+        return $this;
+    }
+
+    /**
+     * Get post
+     *
+     * @return \Acme\BlogBundle\Entity\Post 
+     */
+    public function getPost()
+    {
+        return $this->post;
+    }
 }

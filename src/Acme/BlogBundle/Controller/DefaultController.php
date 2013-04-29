@@ -71,7 +71,7 @@ class DefaultController extends Controller
             $comment->setUser($this->get('security.context')->getToken()->getUser());
         }
 
-        $comment->setPosts($post);
+        $comment->setPost($post);
         $form = $this->createForm(new CommentFormType(), $comment);
 
         if ($request->getMethod() == 'POST') {
