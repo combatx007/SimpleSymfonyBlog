@@ -31,7 +31,7 @@ class Comment
      * @ORM\ManyToOne(targetEntity="Acme\BlogBundle\Entity\Post", inversedBy="comments")
      * @ORM\JoinColumn(name="post_id", referencedColumnName="id")
      */
-    protected $posts;
+    protected $post;
 
     /**
      * @ORM\Column(type="text")

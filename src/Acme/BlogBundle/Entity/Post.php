@@ -43,7 +43,7 @@ class Post
     protected $user;
 
     /**
-     * @ORM\OneToMany(targetEntity="Acme\BlogBundle\Entity\Comment", mappedBy="posts")
+     * @ORM\OneToMany(targetEntity="Acme\BlogBundle\Entity\Comment", mappedBy="post")
      */
     protected $comments;
 

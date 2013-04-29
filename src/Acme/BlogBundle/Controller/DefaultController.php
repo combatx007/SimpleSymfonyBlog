@@ -59,7 +59,7 @@ class DefaultController extends Controller
     public function postAction($id, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-        $posts = $em->getRepository('AcmeBlogBundle:Post')->findOneBy(
+        $post = $em->getRepository('AcmeBlogBundle:Post')->findOneBy(
             ['id'=>$id]
         );
         $comments = $em->getRepository('AcmeBlogBundle:Comment')->findBy(
@@ -71,7 +71,7 @@ class DefaultController extends Controller
             $comment->setUser($this->get('security.context')->getToken()->getUser());
         }
 
-        $comment->setPosts($posts);
+        $comment->setPosts($post);
         $form = $this->createForm(new CommentFormType(), $comment);
 
         if ($request->getMethod() == 'POST') {
@@ -90,7 +90,7 @@ class DefaultController extends Controller
 
         return $this->render('AcmeBlogBundle:Default:post.html.twig', [
             'comments' => $comments,
-            'posts' => $posts,
+            'post' => $post,
             'id' => $id,
             'form' => $form->createView(),
         ]);
