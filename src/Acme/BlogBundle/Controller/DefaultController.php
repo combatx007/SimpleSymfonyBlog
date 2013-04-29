@@ -59,9 +59,7 @@ class DefaultController extends Controller
     public function postAction($id, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-        $post = $em->getRepository('AcmeBlogBundle:Post')->findOneBy(
-            ['id'=>$id]
-        );
+        $post = $em->find('AcmeBlogBundle:Post', $id);
         $comments = $em->getRepository('AcmeBlogBundle:Comment')->findBy(
             ['post'=>$id]
         );
