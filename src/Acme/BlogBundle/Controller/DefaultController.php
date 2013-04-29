@@ -63,7 +63,7 @@ class DefaultController extends Controller
             ['id'=>$id]
         );
         $comments = $em->getRepository('AcmeBlogBundle:Comment')->findBy(
-            ['posts'=>$id]
+            ['post'=>$id]
         );
         $comment = new Comment();
 
