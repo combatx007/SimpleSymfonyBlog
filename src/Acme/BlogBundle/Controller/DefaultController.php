@@ -99,6 +99,7 @@ class DefaultController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $post = new Post();
+        $post->setUser($this->get('security.context')->getToken()->getUser());
 
         $form = $this->createForm(new PostFormType(), $post);
         if ($request->getMethod() == 'POST') {
