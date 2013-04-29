@@ -14,7 +14,10 @@ class PostFormType extends AbstractType
     {
         $builder
             ->add('title', 'text')
+            ->add('annotation', 'textarea')
             ->add('post', 'textarea')
+            ->add('description', 'text')
+            ->add('keyword', 'text')
             ->getForm();
     }
 

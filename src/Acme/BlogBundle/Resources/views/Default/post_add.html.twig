@@ -1,5 +1,12 @@
 {% extends '::base.html.twig' %}
 
+{% block meta %}
+    <meta charset="utf-8">
+    <title>{% block title %}Добавление поста{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="добавление поста">
+    <meta name="author" content="">
+{% endblock %}
 
 {% block text %}
     <div class="span8">
@@ -7,10 +14,16 @@
             <h1>Добавить пост</h1>
         </div>
         <form action="{{ path('acme_blog_post_add') }}" method="post" {{ form_enctype(form) }}>
-            {{ form_label(form.title, 'Заголовок', { 'attr': {'class': 'text-info'} }) }}
-            {{ form_widget(form.title, { 'attr': {'class': '.span8'} }) }}
-            {{ form_label(form.post, 'Пост', { 'attr': {'class': 'text-info'} }) }}
-            {{ form_widget(form.post, { 'attr': {'class': '.span8', 'rows': '10'} }) }}
+            {{ form_label(form.title, null, {'label': 'Заголовок', 'label_attr': {'class': 'text-info'}}) }}
+            {{ form_widget(form.title, {'attr': {'class': '.span8'}}) }}
+            {{ form_label(form.annotation, null, {'label': 'Аннонс', 'label_attr': {'class': 'text-info'}}) }}
+            {{ form_widget(form.annotation, {'attr': {'class': '.span8', rows: '4'}}) }}
+            {{ form_label(form.post, null, {'label': 'Текст', 'label_attr': {'class': 'text-info'}}) }}
+            {{ form_widget(form.post, {'attr': {'class': '.span8', rows: '8'}}) }}
+            {{ form_label(form.description, null, {'label': 'Мета тег Descriptions', 'label_attr': {'class': 'text-info'}}) }}
+            {{ form_widget(form.description, {'attr': {'class': '.span8'}}) }}
+            {{ form_label(form.keyword, null, {'label': 'Мета тег keywords', 'label_attr': {'class': 'text-info'}}) }}
+            {{ form_widget(form.keyword, {'attr': {'class': '.span8'}}) }}
             {{ form_rest(form) }}
             <input type="submit" class="btn btn-primary" />
         </form>

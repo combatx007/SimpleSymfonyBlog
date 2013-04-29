@@ -24,6 +24,16 @@ class Post
     /**
      * @ORM\Column(type="string")
      */
+    protected $description;
+
+    /**
+     * @ORM\Column(type="string")
+     */
+    protected $keyword;
+
+    /**
+     * @ORM\Column(type="string")
+     */
     protected $title;
 
     /**
@@ -31,6 +41,11 @@ class Post
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      */
     protected $user;
+
+    /**
+     * @ORM\Column(type="text")
+     */
+    protected $annotation;
 
     /**
      * @ORM\Column(type="text")
@@ -185,5 +200,74 @@ class Post
     public function getUpdated()
     {
         return $this->updated;
+    }
+
+    /**
+     * Set description
+     *
+     * @param string $description
+     * @return Post
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+    
+        return $this;
+    }
+
+    /**
+     * Get description
+     *
+     * @return string 
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * Set keyword
+     *
+     * @param string $keyword
+     * @return Post
+     */
+    public function setKeyword($keyword)
+    {
+        $this->keyword = $keyword;
+    
+        return $this;
+    }
+
+    /**
+     * Get keyword
+     *
+     * @return string 
+     */
+    public function getKeyword()
+    {
+        return $this->keyword;
+    }
+
+    /**
+     * Set annotation
+     *
+     * @param string $annotation
+     * @return Post
+     */
+    public function setAnnotation($annotation)
+    {
+        $this->annotation = $annotation;
+    
+        return $this;
+    }
+
+    /**
+     * Get annotation
+     *
+     * @return string 
+     */
+    public function getAnnotation()
+    {
+        return $this->annotation;
     }
 }

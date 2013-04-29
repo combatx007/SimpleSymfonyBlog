@@ -24,7 +24,7 @@ class DefaultController extends Controller
             0
         );
 
-        return $this->render('AcmeBlogBundle:Default:page.html.twig', [
+        return $this->render('AcmeBlogBundle:Default:index.html.twig', [
             'posts' => $posts,
             'pages' => $count_pages,
             'id' => '1'
@@ -57,12 +57,12 @@ class DefaultController extends Controller
     public function postAction($id)
     {
         $em = $this->getDoctrine()->getManager();
-        $post = $em->getRepository('AcmeBlogBundle:Post')->findOneBy(
+        $posts = $em->getRepository('AcmeBlogBundle:Post')->findOneBy(
             ['id'=>$id]
         );
 
         return $this->render('AcmeBlogBundle:Default:post.html.twig', [
-            'post' => $post,
+            'posts' => $posts,
             'id' => $id
         ]);
     }
