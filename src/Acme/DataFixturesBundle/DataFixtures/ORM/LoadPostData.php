@@ -8,6 +8,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\ContainerAware;
 use Acme\BlogBundle\Entity\Post;
 use Acme\UserBundle\Entity\User;
+use Acme\BlogBundle\Entity\Comment;
 use FOS\UserBundle\Model\UserManager;
 
 class LoadPostData extends ContainerAware implements FixtureInterface
@@ -99,6 +100,13 @@ The schedule for the Symfony Live conference in Portland has just been published
         $post->setCreated(new \DateTime());
         $post->setUpdated(new \DateTime());
         $manager->persist($post);
+
+        $comment = new Comment();
+        $comment->setComment('Коммент');
+        $post = new Post();
+        $comment->setUser($userAdmin);
+        $comment->setPosts($post->getPost());
+        $manager->persist($comment);
 
         $manager->flush();
     }

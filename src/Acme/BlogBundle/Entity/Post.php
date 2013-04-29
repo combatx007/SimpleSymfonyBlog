@@ -43,6 +43,11 @@ class Post
     protected $user;
 
     /**
+     * @ORM\OneToMany(targetEntity="Acme\BlogBundle\Entity\Comment", mappedBy="posts")
+     */
+    protected $comments;
+
+    /**
      * @ORM\Column(type="text")
      */
     protected $annotation;
@@ -269,5 +274,38 @@ class Post
     public function getAnnotation()
     {
         return $this->annotation;
+    }
+
+    /**
+     * Add comments
+     *
+     * @param \Acme\BlogBundle\Entity\Comment $comments
+     * @return Post
+     */
+    public function addComment(\Acme\BlogBundle\Entity\Comment $comments)
+    {
+        $this->comments[] = $comments;
+    
+        return $this;
+    }
+
+    /**
+     * Remove comments
+     *
+     * @param \Acme\BlogBundle\Entity\Comment $comments
+     */
+    public function removeComment(\Acme\BlogBundle\Entity\Comment $comments)
+    {
+        $this->comments->removeElement($comments);
+    }
+
+    /**
+     * Get comments
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getComments()
+    {
+        return $this->comments;
     }
 }

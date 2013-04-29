@@ -17,7 +17,9 @@
         <div>
             <p class="pull-left">
             </p>
-            <p>{{ posts.post }}</p>
+            <p>
+                {{ posts.post }}
+            </p>
 
             <p>
                 <small>{{ posts.user }}</small>
@@ -34,6 +36,33 @@
                     {% endif %}
                 {% endif %}
             </p>
+        </div>
+    </div>
+    <div class="span8">
+        <div class="page-header">
+            <h2>Комментарии</h2>
+            <p>
+                {% for comments in comments %}
+                    {{ comments.comment }}
+                {% endfor %}
+            </p>
+        </div>
+    </div>
+    <div class="span8">
+        <div class="page-header">
+            {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+            <h2>Оставить комментарий</h2>
+            <p>
+            <form action="{{ path('acme_blog_post') }}" method="post" {{ form_enctype(form) }}>
+                {{ form_label(form.comment, null, {'label': 'Комментарий', 'label_attr': {'class': 'text-info'}}) }}
+                {{ form_widget(form.comment, {'attr': {'class': '.span5'}}) }}
+                {{ form_rest(form) }}
+                <input type="submit" class="btn btn-primary" />
+            </form>
+            </p>
+            {% else %}
+            <p>авторизуйтесь, для отправки комментариев</p>
+            {% endif %}
         </div>
     </div>
 {% endblock %}
