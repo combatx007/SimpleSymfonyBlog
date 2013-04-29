@@ -120,4 +120,61 @@ class DefaultController extends Controller
             'form' => $form->createView(),
         ]);
     }
+
+    public function adminAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+        $query = $em->createQuery('SELECT COUNT(p.id) FROM AcmeBlogBundle:Post p');
+
+        $limit = 10;
+        $count_pages = ceil($query->getSingleScalarResult() / $limit);
+        $posts = $em->getRepository('AcmeBlogBundle:Post')->findBy(
+            [],
+            ['updated' => 'DESC'],
+            $limit,
+            0
+        );
+
+        return $this->render('AcmeBlogBundle:Default:admin.html.twig', [
+            'posts' => $posts,
+            'pages' => $count_pages,
+            'id' => '1'
+        ]);
+    }
+
+    public function adminpageAction($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $query = $em->createQuery('SELECT COUNT(p.id) FROM AcmeBlogBundle:Post p');
+
+        $limit = 10;
+        $count_pages = ceil($query->getSingleScalarResult() / $limit);
+        $offset = ($id - 1) * $limit;
+
+        $posts = $em->getRepository('AcmeBlogBundle:Post')->findBy(
+            [],
+            ['updated' => 'DESC'],
+            $limit,
+            $offset
+        );
+
+        return $this->render('AcmeBlogBundle:Default:admin.html.twig', [
+            'posts' => $posts,
+            'pages' => $count_pages,
+            'id' => $id
+        ]);
+    }
+
+    public function deleteAction($id, Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $post = $em->getRepository('AcmeBlogBundle:Post')->findOneBy(
+            ['id'=>$id]
+        );
+
+        $em->remove($post);
+        $em->flush();
+
+        return $this->render('AcmeBlogBundle:Default:post_delete.html.twig');
+    }
 }

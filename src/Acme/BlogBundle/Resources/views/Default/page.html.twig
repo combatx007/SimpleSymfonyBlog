@@ -25,10 +25,12 @@
         <ul class="nav nav-list">
             <li class="nav-header">Меню</li>
             <li class="active"><a href="{{ app.request.basePath }}/">На главную</a></li>
-        {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-            <li><a href="{{ app.request.basePath }}/post/add">Добавить пост</a></li>
-        {% endif %}
-            <li><a href="{{ app.request.basePath }}/">Ссылка</a></li>
+            {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+                <li><a href="{{ app.request.basePath }}/post/add">Добавить пост</a></li>
+            {% endif %}
+            {% if is_granted('ROLE_ADMIN') %}
+                <li><a href="{{ app.request.basePath }}/admin/">Админка</a></li>
+            {% endif %}
             <li><a href="{{ app.request.basePath }}/">Ссылка</a></li>
             <li><a href="{{ app.request.basePath }}/">Ссылка</a></li>
             <li class="nav-header">Облако тегов</li>

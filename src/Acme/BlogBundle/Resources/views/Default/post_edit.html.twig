@@ -4,8 +4,12 @@
 {% block text %}
     <div class="span8">
         <form action="{{ path('acme_blog_post_edit') }}/{{ id }}" method="post" {{ form_enctype(form) }}>
-            {{ form_widget(form) }}
-            <input type="submit" />
+            {{ form_label(form.title, null, {'label': 'Заголовок', 'label_attr': {'class': 'text-info'}}) }}
+            {{ form_widget(form.title, {'attr': {'class': '.span8'}}) }}
+            {{ form_label(form.post, null, {'label': 'Текст', 'label_attr': {'class': 'text-info'}}) }}
+            {{ form_widget(form.post, {'attr': {'class': '.span8', rows: '8'}}) }}
+            {{ form_rest(form) }}
+            <input type="submit" class="btn btn-primary" />
         </form>
     </div>
 {% endblock %}
