@@ -8,6 +8,7 @@ use Doctrine\ORM\Events;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use Doctrine\ORM\Mapping\HasLifecycleCallBacks;
+use Doctrine\Common\Collections\ArrayCollection;
 /**
  * @ORM\Entity HasLifecycleCallBacks
  * @ORM\Table(name="post")
@@ -71,6 +72,8 @@ class Post
     {
         $this->created = new \DateTime();
         $this->updated = new \DateTime();
+        $this->comments = new ArrayCollection();
+        $this->user = new ArrayCollection();
     }
 
     /**

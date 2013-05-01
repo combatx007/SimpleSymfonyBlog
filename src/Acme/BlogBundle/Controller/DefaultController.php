@@ -69,7 +69,9 @@ class DefaultController extends Controller
             $comment->setUser($this->get('security.context')->getToken()->getUser());
         }
 
-        $comment->setPost($post);
+        $postid = new Post();
+        $postid = $postid->getId();
+
         $form = $this->createForm(new CommentFormType(), $comment);
 
         if ($request->getMethod() == 'POST') {
@@ -77,6 +79,7 @@ class DefaultController extends Controller
 
             if ($form->isValid()) {
                 $em->persist($form->getData());
+                $em->persist($comment->setPost($postid));
                 $em->flush();
                 $this->get('session')->setFlash('id', $id);
 

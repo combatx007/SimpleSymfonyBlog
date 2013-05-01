@@ -42,9 +42,11 @@
         <div class="page-header">
             <h2>Комментарии</h2>
             <p>
-                {% for comments in comments %}
-                    {{ comments.comment }}
-                {% endfor %}
+                    {% for comments in comments %}
+                    <p><b>{{ comments.user }}</b></p>
+                    <p>{{ comments.comment }}</p>
+
+                    {% endfor %}
             </p>
         </div>
     </div>
