@@ -29,8 +29,7 @@ twig:
 assetic:
     debug:          %kernel.debug%
     use_controller: false
-    bundles:        [ ]
-    #java: /usr/bin/java
+    bundles: [ "FOSCommentBundle" ]
     filters:
         cssrewrite: ~
         #closure:
@@ -71,3 +70,10 @@ fos_user:
     registration:
         confirmation:
             enabled: false # change to true for required email confirmation
+
+fos_comment:
+    db_driver: orm
+    class:
+        model:
+            comment: Acme\BlogBundle\Entity\Comment
+            thread: Acme\BlogBundle\Entity\Thread
