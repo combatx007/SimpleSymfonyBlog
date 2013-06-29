@@ -56,44 +56,14 @@ class DefaultController extends Controller
         ]);
     }
 
-    public function postAction($id, Request $request)
+    public function postAction($id)
     {
         $em = $this->getDoctrine()->getManager();
         $post = $em->find('AcmeBlogBundle:Post', $id);
-        $comments = $em->getRepository('AcmeBlogBundle:Comment')->findBy(
-            ['post'=>$id]
-        );
-        $comment = new Comment();
-
-        if ($this->get('security.context')->isGranted('ROLE_USER')) {
-            $comment->setUser($this->get('security.context')->getToken()->getUser());
-        }
-
-        $postid = new Post();
-        $postid = $postid->getId();
-
-        $form = $this->createForm(new CommentFormType(), $comment);
-
-        if ($request->getMethod() == 'POST') {
-            $form->bind($request);
-
-            if ($form->isValid()) {
-                $em->persist($form->getData());
-                $em->persist($comment->setPost($postid));
-                $em->flush();
-                $this->get('session')->setFlash('id', $id);
-
-                return $this->redirect($this->generateUrl(
-                    'acme_blog_homepage'
-                ));
-            }
-        }
 
         return $this->render('AcmeBlogBundle:Default:post.html.twig', [
-            'comments' => $comments,
             'post' => $post,
             'id' => $id,
-            'form' => $form->createView(),
         ]);
     }
 
