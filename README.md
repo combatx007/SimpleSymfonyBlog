@@ -1,174 +1,61 @@
-Symfony Standard Edition
-========================
+Блог – первый проект на Symfony2.
 
-Welcome to the Symfony Standard Edition - a fully-functional Symfony2
-application that you can use as the skeleton for your new applications.
+Эта статья предназначена для тех, кто только начинает знакомиться с фремворокм Symfony2. Здесь будут описаны основные этапы создания блога на нем, приведены ссылки на документацию и прочие обучающие материалы, информацию, которую необходимо знать и понимать.
 
-This document contains information on how to download, install, and start
-using Symfony. For a more detailed explanation, see the [Installation][1]
-chapter of the Symfony Documentation.
+-<a href="https://github.com/combatx007/SimpleSymfonyBlog">Блог на гитхабе</a>
 
-1) Installing the Standard Edition
-----------------------------------
+-<a href="http://simple-blogs.tk/">на сервере</a>
 
-When it comes to installing the Symfony Standard Edition, you have the
-following options.
 
-### Use Composer (*recommended*)
 
-As Symfony uses [Composer][2] to manage its dependencies, the recommended way
-to create a new project is to use it.
+Прежде всего, у вас должен стоят php+mysql сервер, а также все необходимые инструменты, информацию о том, как установить и настроить весь необходимый инструментарий можно найти на сайте (я делал по <a href="http://smart-core.org/wiki/%D0%A3%D1%81%D1%82%D0%B0%D0%BD%D0%BE%D0%B2%D0%BA%D0%B0_%D0%B2%D0%B5%D0%B1-%D1%81%D0%B5%D1%80%D0%B2%D0%B5%D1%80%D0%B0_%D0%BD%D0%B0_Windows">данной инструкции</a>).
 
-If you don't have Composer yet, download it following the instructions on
-http://getcomposer.org/ or just run the following command:
 
-    curl -s http://getcomposer.org/installer | php
+Теперь, когда есть все для начала работы, необходимо установить сам фреймворк Symfony2:
 
-Then, use the `create-project` command to generate a new Symfony application:
+http://symfony.com/
 
-    php composer.phar create-project symfony/framework-standard-edition path/to/install
+В официальной документации:
 
-Composer will install Symfony and all its dependencies under the
-`path/to/install` directory.
+http://symfony.com/doc/master/book/index.html (енг.)
+http://symfony-gu.ru/documentation/ru/html/index.html (рус.)
 
-### Download an Archive File
+Есть подробное описание установки и настройки Symfony2.
 
-To quickly test Symfony, you can also download an [archive][3] of the Standard
-Edition and unpack it somewhere under your web server root directory.
+Далее приступаем непосредственно к разработке. Конфигурируем бандл User (все делается достаточно просто, т.к. будем использовать FOSUserBundle), мануал и сам бандл можно найти <a href="https://github.com/FriendsOfSymfony/FOSUserBundle/blob/master/Resources/doc/index.md">здесь</a>.
+Затем создаем сам бандл Blog, подробно создание бандла расписано как в русской, так и в оригинальной документации.  Соответственно при создании бандла BlogBundle для просмотра результата нам необходим какой-либо шаблон, поэтому неплохо было бы на данном этапе уже иметь заготовку, это позволит видеть все более наглядно.
+Создаем сущность Post в бандле BlogBundle, здесь будет описано при помощи php и аннотаций (см. <a href="http://symfony.com/doc/master/book/doctrine.html">информацию по Doctrine</a>), какую информацию в конечном итоге будет содержать таблица Post в вашей базе данных (заголовки, посты и т.д.).  Так как нам необходимо чтобы каждый пост принадлежал какому-либо  автору, то необходимо задать эту связь при помощи аннотаций Doctrine через отношение «One-To-Many, Bidirectional» (http://odiszapc.ru/doctrine/association-mapping/). 
+Также создаем <a href="http://symfony.com/doc/master/bundles/DoctrineFixturesBundle/index.html">фикстуры</a> – дефолтные значения, которые заносятся в БД.  Лучшим вариантом будет вынести их в отдельный бандл.
+Так как у нас должен в итоге получится блог, то у нас должна быть «лента постов», т. е. на  1 странице, например, 1 нас будет по 3 поста, в т. ч. и на «главной». Таким образом, нам необходимо прописать соответствующие маршруты для главной страницы и для остальных страниц нашей ленты (<a href="https://github.com/combatx007/SimpleSymfonyBlog/blob/master/src/Acme/BlogBundle/Resources/config/routing.yml">пример</a>). После этого мы можем написать контроллер для главной страницы. Необходимо чтобы выводилось по 3 поста на страницу поочередно, соответственно на «главной» у нас всегда должно быть 3 самых свежих поста. Для этого мы при помощи метода findBy()  (см. в <a href="http://symfony.com/doc/2.0/book/doctrine.html">документации по symfony2</a>) вытаскиваем из базы соответствующие посты и воспроизводя их в обратном порядке.
 
-If you downloaded an archive "without vendors", you also need to install all
-the necessary dependencies. Download composer (see above) and run the
-following command:
+<a href="https://github.com/combatx007/SimpleSymfonyBlog/blob/master/src/Acme/BlogBundle/Controller/DefaultController.php#L22-L27">ПРИМЕР</a>
 
-    php composer.phar install
+Здесь мы в качестве пустого массива указываем критерии отбора, следующий пункт говорит о том, что последовательность будет в обратном порядке по дате обновления поста, ограничение по количеству выводимых постов записано в переменной $limit, ну и значение «0» - отступ в базе данных.
+Теперь можно перейти  к написанию контроллера для вывода страниц блога. Для этого мы вновь обращаемся к файлу routing.yml. В моем случае, я сделал маршрут /page/{id}, где id ограничен цифровым значением:
+requirements:
+        id:  \d+
+        
+Приступая к написанию контроллера для вывода постов на странице, нужно понимать как вычислить отступ на соответствующей странице вашего блога. Для этого можно взять следующую формулу:
 
-2) Checking your System Configuration
--------------------------------------
+$offset = ($id - 1) * $limit;
 
-Before starting coding, make sure that your local system is properly
-configured for Symfony.
+где $id – id конкретной страницы, который будет передаваться в контроллер при заходе посетителем на ту или иную страницу блога (например, site.ru/page/2). Далее аналогично предыдущему контроллеру вытаскиваем записи при помощи findBy(), только теперь вместо числового значения «0» последним аргументом у нас будет переменная $offset. После передаем все в шаблон.
 
-Execute the `check.php` script from the command line:
+Теперь нам нужно прописать маршрут и описать контроллер для отображения одного поста. Для этого нужно просто вытащить из базы пост с соответствующим id (он будет браться из uri нашего маршрута, например, site.ru/post/2, id = 2). Пример:
 
-    php app/check.php
+$post = $em->find('AcmeBlogBundle:Post', $id);
 
-Access the `config.php` script from a browser:
+Таким образом у нас теперь есть лента постов, в которой выводится по 3 новости на страницу, а также настроено отображение каждого отдельного поста.
+Саму визуальную навигацию можно оформить прямо в шаблонизаторе (см. <a href="https://github.com/combatx007/SimpleSymfonyBlog/">пример на гитхабе</a>).
 
-    http://localhost/path/to/symfony/app/web/config.php
+Далее нам понадобится создать редактирование, добавление и удаление постов. С добавлением постов все просто, при помощи:
+$post->setUser($this->get('security.context')->getToken()->getUser());
 
-If you get any warnings or recommendations, fix them before moving on.
+мы узнаем какой пользователь залогинен на данный момент, а далее берем данные из формы, и передаем их объекту (соответственно впоследствии информация пишется в БД).
+Редактирование постов можно сделать как отдельно (т. е. что-то вроде мини админки), а также непосредственно добавить возможность редактирования при просмотре поста соответствующим пользователям. На моем блоге реализованы оба варианта. 
+Для начала как обычно прописываем нужный маршрут и начинаем описывать контроллер. Здесь необходимо организовать само редактирование и отправку данных  в БД. Для большей удобности советую вынести описание типов форм в отдельные файлы. У меня этот файл называется PostFormType.php. В нем указываем какие поля будет содержать форма, сущность с которой мы она будет взаимодействовать, а также уникальное имя. Пример:
+<a href="https://github.com/combatx007/SimpleSymfonyBlog/blob/master/src/Acme/BlogBundle/Form/Type/PostFormType.php">PostFormType.php</a>
 
-3) Browsing the Demo Application
---------------------------------
-
-Congratulations! You're now ready to use Symfony.
-
-From the `config.php` page, click the "Bypass configuration and go to the
-Welcome page" link to load up your first Symfony page.
-
-You can also use a web-based configurator by clicking on the "Configure your
-Symfony Application online" link of the `config.php` page.
-
-To see a real-live Symfony page in action, access the following page:
-
-    web/app_dev.php/demo/hello/Fabien
-
-4) Getting started with Symfony
--------------------------------
-
-This distribution is meant to be the starting point for your Symfony
-applications, but it also contains some sample code that you can learn from
-and play with.
-
-A great way to start learning Symfony is via the [Quick Tour][4], which will
-take you through all the basic features of Symfony2.
-
-Once you're feeling good, you can move onto reading the official
-[Symfony2 book][5].
-
-A default bundle, `AcmeDemoBundle`, shows you Symfony2 in action. After
-playing with it, you can remove it by following these steps:
-
-  * delete the `src/Acme` directory;
-
-  * remove the routing entries referencing AcmeBundle in
-    `app/config/routing_dev.yml`;
-
-  * remove the AcmeBundle from the registered bundles in `app/AppKernel.php`;
-
-  * remove the `web/bundles/acmedemo` directory;
-
-  * remove the `security.providers`, `security.firewalls.login` and
-    `security.firewalls.secured_area` entries in the `security.yml` file or
-    tweak the security configuration to fit your needs.
-
-What's inside?
----------------
-
-The Symfony Standard Edition is configured with the following defaults:
-
-  * Twig is the only configured template engine;
-
-  * Doctrine ORM/DBAL is configured;
-
-  * Swiftmailer is configured;
-
-  * Annotations for everything are enabled.
-
-It comes pre-configured with the following bundles:
-
-  * **FrameworkBundle** - The core Symfony framework bundle
-
-  * [**SensioFrameworkExtraBundle**][6] - Adds several enhancements, including
-    template and routing annotation capability
-
-  * [**DoctrineBundle**][7] - Adds support for the Doctrine ORM
-
-  * [**TwigBundle**][8] - Adds support for the Twig templating engine
-
-  * [**SecurityBundle**][9] - Adds security by integrating Symfony's security
-    component
-
-  * [**SwiftmailerBundle**][10] - Adds support for Swiftmailer, a library for
-    sending emails
-
-  * [**MonologBundle**][11] - Adds support for Monolog, a logging library
-
-  * [**AsseticBundle**][12] - Adds support for Assetic, an asset processing
-    library
-
-  * [**JMSSecurityExtraBundle**][13] - Allows security to be added via
-    annotations
-
-  * [**JMSDiExtraBundle**][14] - Adds more powerful dependency injection
-    features
-
-  * **WebProfilerBundle** (in dev/test env) - Adds profiling functionality and
-    the web debug toolbar
-
-  * **SensioDistributionBundle** (in dev/test env) - Adds functionality for
-    configuring and working with Symfony distributions
-
-  * [**SensioGeneratorBundle**][15] (in dev/test env) - Adds code generation
-    capabilities
-
-  * **AcmeDemoBundle** (in dev/test env) - A demo bundle with some example
-    code
-
-Enjoy!
-
-[1]:  http://symfony.com/doc/2.1/book/installation.html
-[2]:  http://getcomposer.org/
-[3]:  http://symfony.com/download
-[4]:  http://symfony.com/doc/2.1/quick_tour/the_big_picture.html
-[5]:  http://symfony.com/doc/2.1/index.html
-[6]:  http://symfony.com/doc/2.1/bundles/SensioFrameworkExtraBundle/index.html
-[7]:  http://symfony.com/doc/2.1/book/doctrine.html
-[8]:  http://symfony.com/doc/2.1/book/templating.html
-[9]:  http://symfony.com/doc/2.1/book/security.html
-[10]: http://symfony.com/doc/2.1/cookbook/email.html
-[11]: http://symfony.com/doc/2.1/cookbook/logging/monolog.html
-[12]: http://symfony.com/doc/2.1/cookbook/assetic/asset_management.html
-[13]: http://jmsyst.com/bundles/JMSSecurityExtraBundle/master
-[14]: http://jmsyst.com/bundles/JMSDiExtraBundle/master
-[15]: http://symfony.com/doc/2.1/bundles/SensioGeneratorBundle/index.html
+Теперь в контроллере для редактирования постов мы создаем форму, а далее принимаем данные, переданные методом POST, производим проверки и отправляем в БД.
+Выше я говорил о 2 способах реализации редактирования постов. Первый из них можно сделать в шаблонизаторе при помощи проверки прав пользователя и принадлежности ему данного поста. При выполнении условий он получит ссылку на редактирование данного поста.
+Если мы хотим реализовать тоже самое, но через админку, нужно прописать соответствующий маршрут, описать контроллер для постраничного вывода имеющихся заголовков новостей и ссылки на редактирование каждой конкретной новости. Также в админке можно добавить помимо ссылке на редактирование, ссылку на удаление поста. Делается это просто, при помощи полученного id поста отбираем нужную запись из базы данных и посылаем команду  $this->getDoctrine()->getManager()->remove($post); 
