@@ -8,7 +8,7 @@ use Doctrine\ORM\Events;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use Doctrine\ORM\Mapping\HasLifecycleCallBacks;
-use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\ArrayCollection as ArrayCollection;
 /**
  * @ORM\Entity HasLifecycleCallBacks
  * @ORM\Table(name="post")
@@ -68,12 +68,25 @@ class Post
      */
     protected $updated;
 
+    /**
+     * Tags for post
+     *
+     * @var ArrayCollection
+     * @ORM\ManyToMany(targetEntity="Acme\BlogBundle\Entity\Tag")
+     * @ORM\JoinTable(name="blog_posts_tags",
+     * joinColumns={@ORM\JoinColumn(name="post_id", referencedColumnName="id")},
+     * inverseJoinColumns={@ORM\JoinColumn(name="tag_id", referencedColumnName="id")}
+     * )
+     */
+    private $tags;
+
     public function __construct()
     {
         $this->created = new \DateTime();
         $this->updated = new \DateTime();
         $this->comments = new ArrayCollection();
         $this->user = new ArrayCollection();
+        $this->tags = new ArrayCollection();
     }
 
     /**
@@ -310,5 +323,38 @@ class Post
     public function getComments()
     {
         return $this->comments;
+    }
+
+    /**
+     * Add tags
+     *
+     * @param \Acme\BlogBundle\Entity\Tag $tags
+     * @return Post
+     */
+    public function addTag(\Acme\BlogBundle\Entity\Tag $tags)
+    {
+        $this->tags[] = $tags;
+
+        return $this;
+    }
+
+    /**
+     * Remove tags
+     *
+     * @param \Acme\BlogBundle\Entity\Tag $tags
+     */
+    public function removeTag(\Acme\BlogBundle\Entity\Tag $tags)
+    {
+        $this->tags->removeElement($tags);
+    }
+
+    /**
+     * Get tags
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getTags()
+    {
+        return $this->tags;
     }
 }

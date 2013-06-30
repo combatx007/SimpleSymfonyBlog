@@ -25,4 +25,38 @@ class Comment extends BaseComment
      * @ORM\ManyToOne(targetEntity="Acme\BlogBundle\Entity\Thread")
      */
     protected $thread;
+
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Get thread
+     *
+     * @return \Acme\BlogBundle\Entity\Thread 
+     */
+    public function getThread()
+    {
+        return $this->thread;
+    }
+
+    /**
+     * Set thread
+     *
+     * @param \Acme\BlogBundle\Entity\Thread $thread
+     * @return Comment
+     */
+
+    /**
+     * Set thread
+     *
+     * @param \Acme\BlogBundle\Entity\Thread $thread
+     * @return Comment
+     */
 }

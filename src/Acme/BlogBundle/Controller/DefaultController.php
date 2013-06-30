@@ -4,10 +4,12 @@ namespace Acme\BlogBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Acme\BlogBundle\Entity\Post;
+use Acme\BlogBundle\Entity\Tag;
 use Acme\BlogBundle\Entity\Comment;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Acme\BlogBundle\Form\Type\PostFormType;
+use Acme\BlogBundle\Form\Type\TagFormType;
 use Acme\BlogBundle\Form\Type\CommentFormType;
 
 class DefaultController extends Controller
@@ -60,10 +62,12 @@ class DefaultController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $post = $em->find('AcmeBlogBundle:Post', $id);
+        $tags = new Post();
 
         return $this->render('AcmeBlogBundle:Default:post.html.twig', [
             'post' => $post,
             'id' => $id,
+            'tags' => $tags->getTags(),
         ]);
     }
 
@@ -99,14 +103,18 @@ class DefaultController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $post = new Post();
+        $tag = new Tag();
         $post->setUser($this->get('security.context')->getToken()->getUser());
 
         $form = $this->createForm(new PostFormType(), $post);
+        $formtag = $this->createForm(new TagFormType(), $tag);
         if ($request->getMethod() == 'POST') {
             $form->bind($request);
+            $formtag->bind($request);
 
             if ($form->isValid()) {
                 $em->persist($form->getData());
+                $em->persist($formtag->getData());
                 $em->flush();
 
                 return $this->redirect($this->generateUrl(
@@ -118,6 +126,7 @@ class DefaultController extends Controller
 
         return $this->render('AcmeBlogBundle:Default:post_add.html.twig', [
             'form' => $form->createView(),
+            'formtag' => $formtag->createView(),
         ]);
     }
 

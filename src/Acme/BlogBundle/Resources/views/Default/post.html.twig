@@ -40,7 +40,9 @@
     </div>
     <div class="span8">
         <div class="page-header">
-            <h2>Комментарии</h2>
+            <h2>Метки:</h2>
+            <p>{{ tags }}</p>
+            <p><h2>Комментарии</h2></p>
             <p>
                 {% include 'FOSCommentBundle:Thread:async.html.twig' with {'id': id } %}
             </p>
