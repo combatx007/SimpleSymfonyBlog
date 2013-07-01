@@ -6,23 +6,20 @@
     },
     "require": {
         "php": ">=5.4.1",
-        "symfony/symfony": "2.2.*",
-        "doctrine/orm": "~2.2,>=2.2.3",
+        "symfony/symfony": "2.3.*",
+        "doctrine/orm": ">=2.2.3,<2.4-dev",
         "doctrine/doctrine-bundle": "1.2.*",
         "twig/extensions": "1.0.*",
-        "symfony/assetic-bundle": "2.1.*",
-        "symfony/swiftmailer-bundle": "2.2.*",
-        "symfony/monolog-bundle": "2.2.*",
-        "sensio/distribution-bundle": "2.2.*",
-        "sensio/framework-extra-bundle": "2.2.*",
-        "sensio/generator-bundle": "2.2.*",
-        "jms/security-extra-bundle": "1.4.*",
-        "jms/di-extra-bundle": "1.3.*",
+        "symfony/assetic-bundle": "2.3.*",
+        "symfony/swiftmailer-bundle": "2.3.*",
+        "symfony/monolog-bundle": "2.3.*",
+        "sensio/distribution-bundle": "2.3.*",
+        "sensio/generator-bundle": "2.3.*",
         "jms/serializer-bundle": "*",
-		"friendsofsymfony/user-bundle": "*",
-        "friendsofsymfony/comment-bundle": "*",
+        "friendsofsymfony/user-bundle": "~2.0@dev",
+        "friendsofsymfony/comment-bundle": "~2.0@dev",
         "friendsofsymfony/rest-bundle": "*",
-		"doctrine/doctrine-fixtures-bundle": "dev-master",
+        "doctrine/doctrine-fixtures-bundle": "dev-master",
         "doctrine/doctrine-migrations-bundle": "dev-master",
         "raulfraile/ladybug-bundle": "dev-master",
         "knplabs/knp-paginator-bundle": "dev-master"
@@ -47,9 +44,6 @@
     "minimum-stability": "alpha",
     "extra": {
         "symfony-app-dir": "app",
-        "symfony-web-dir": "web",
-        "branch-alias": {
-            "dev-master": "2.2-dev"
-        }
+        "symfony-web-dir": "web"
     }
 }

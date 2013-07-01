@@ -101,13 +101,6 @@ The schedule for the Symfony Live conference in Portland has just been published
         $post->setUpdated(new \DateTime());
         $manager->persist($post);
 
-        $comment = new Comment();
-        $comment->setComment('Коммент');
-        $post = new Post();
-        $comment->setUser($userAdmin);
-        $comment->setPosts($post->getPost());
-        $manager->persist($comment);
-
         $manager->flush();
     }
 }
