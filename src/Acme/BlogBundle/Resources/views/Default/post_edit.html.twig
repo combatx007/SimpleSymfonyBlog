@@ -22,7 +22,10 @@
             {{ form_label(form.keyword, null, {'label': 'Мета тег keywords', 'label_attr': {'class': 'text-info'}}) }}
             {{ form_widget(form.keyword, {'attr': {'class': '.span8'}}) }}
             {{ form_rest(form) }}
-            <input type="submit" class="btn btn-primary" />
+            {% for tag in tag %}
+            {{ form_widget(formtag.text, {'attr': {'class': '.span8'}}) }}
+            {% endfor %}
+            <p><input type="submit" class="btn btn-primary" />
         </form>
     </div>
 {% endblock %}

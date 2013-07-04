@@ -22,16 +22,9 @@ class Tag
      */
     private $text;
 
-    /**
-     * @var ArrayCollection
-     * @ORM\ManyToMany(targetEntity="Acme\BlogBundle\Entity\Post", mappedBy="tags")
-     */
-    private $posts;
-
     public function __construct($text = null)
     {
         $this->text = $text;
-        $this->posts = new ArrayCollection();
     }
 
     /**

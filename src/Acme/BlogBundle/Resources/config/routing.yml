@@ -34,3 +34,7 @@ acme_blog_admin_page:
     defaults: { _controller: AcmeBlogBundle:Default:adminpage }
     requirements:
         id:  \d+
+
+acme_blog_post_tag:
+    pattern:  /post/tag
+    defaults: { _controller: AcmeBlogBundle:Default:tag }

@@ -59,4 +59,11 @@ class Comment extends BaseComment
      * @param \Acme\BlogBundle\Entity\Thread $thread
      * @return Comment
      */
+
+    /**
+     * Set thread
+     *
+     * @param \Acme\BlogBundle\Entity\Thread $thread
+     * @return Comment
+     */
 }
