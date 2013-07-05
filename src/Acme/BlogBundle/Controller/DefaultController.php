@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Acme\BlogBundle\Form\Type\PostFormType;
 use Acme\BlogBundle\Form\Type\TagFormType;
+use Acme\BlogBundle\Form\Type\TagsFormType;
 use Acme\BlogBundle\Form\Type\CommentFormType;
 
 class DefaultController extends Controller
@@ -77,7 +78,7 @@ class DefaultController extends Controller
         $post = $em->find('AcmeBlogBundle:Post', $id);
         $tag = $em->getRepository('AcmeBlogBundle:Tag')->findAll();
         $form = $this->createForm(new PostFormType(), $post);
-        $formtag = $this->createForm(new TagFormType(), $tag);
+        $formtag = $this->createForm(new TagsFormType(), $tag);
         if ($request->getMethod() == 'POST') {
             $form->bind($request);
             $formtag->bind($request);
