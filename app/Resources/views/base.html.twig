@@ -161,6 +161,7 @@
                       <li><a href="{{ app.request.basePath }}/post/add">Добавить пост</a></li>
                   {% endif %}
                   {% if is_granted('ROLE_ADMIN') %}
+                      <li><a href="{{ app.request.basePath }}/post/tag">Добавить теги</a></li>
                       <li><a href="{{ app.request.basePath }}/admin/">Админка</a></li>
                   {% endif %}
                   <li><a href="{{ app.request.basePath }}/">Ссылка</a></li>
