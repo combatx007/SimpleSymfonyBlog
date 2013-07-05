@@ -76,16 +76,12 @@ class DefaultController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $post = $em->find('AcmeBlogBundle:Post', $id);
-        $tag = $em->getRepository('AcmeBlogBundle:Tag')->findAll();
         $form = $this->createForm(new PostFormType(), $post);
-        $formtag = $this->createForm(new TagsFormType(), $tag);
         if ($request->getMethod() == 'POST') {
             $form->bind($request);
-            $formtag->bind($request);
 
             if ($form->isValid()) {
                 $em->persist($form->getData());
-                $em->persist($formtag->getData());
                 $em->flush();
 
                 return $this->redirect($this->generateUrl(
@@ -99,8 +95,6 @@ class DefaultController extends Controller
         return $this->render('AcmeBlogBundle:Default:post_edit.html.twig', [
             'form' => $form->createView(),
             'id' => $id,
-            'formtag' => $formtag->createView(),
-            'tag' => $tag,
         ]);
     }
 
@@ -108,18 +102,14 @@ class DefaultController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $post = new Post();
-        $tag = new Tag();
         $post->setUser($this->get('security.context')->getToken()->getUser());
 
         $form = $this->createForm(new PostFormType(), $post);
-        $formtag = $this->createForm(new TagFormType(), $tag);
         if ($request->getMethod() == 'POST') {
             $form->bind($request);
-            $formtag->bind($request);
 
             if ($form->isValid()) {
                 $em->persist($form->getData());
-                $em->persist($formtag->getData());
                 $em->flush();
 
                 return $this->redirect($this->generateUrl(
@@ -130,8 +120,7 @@ class DefaultController extends Controller
 
 
         return $this->render('AcmeBlogBundle:Default:post_add.html.twig', [
-            'form' => $form->createView(),
-            'formtag' => $formtag->createView(),
+            'form' => $form->createView()
         ]);
     }
 
@@ -196,7 +185,12 @@ class DefaultController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $tag = new Tag();
-
+        $tags = $em->getRepository('AcmeBlogBundle:Tag')->findBy(
+            [],
+            ['id' => 'ASC'],
+            100,
+            0
+        );
         $form = $this->createForm(new TagFormType(), $tag);
         if ($request->getMethod() == 'POST') {
             $form->bind($request);
@@ -205,13 +199,14 @@ class DefaultController extends Controller
                 $em->flush();
 
                 return $this->redirect($this->generateUrl(
-                    'acme_blog_homepage'
+                    'acme_blog_post_tag'
                 ));
             }
         }
 
         return $this->render('AcmeBlogBundle:Default:post_tag.html.twig', [
             'form' => $form->createView(),
+            'tags' => $tags,
         ]);
     }
 
