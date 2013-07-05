@@ -76,6 +76,13 @@ class DefaultController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $post = $em->find('AcmeBlogBundle:Post', $id);
+        $tags = $em->getRepository('AcmeBlogBundle:Tag')->findBy(
+            [],
+            ['id' => 'ASC'],
+            100,
+            0
+        );
+
         $form = $this->createForm(new PostFormType(), $post);
         if ($request->getMethod() == 'POST') {
             $form->bind($request);
