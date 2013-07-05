@@ -214,4 +214,28 @@ class DefaultController extends Controller
             'form' => $form->createView(),
         ]);
     }
+
+    public function tageditAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $tag = $em->getRepository('AcmeBlogBundle:Tag')->findAll();
+        $form = $this->createForm(new TagFormType(), $tag);
+        if ($request->getMethod() == 'POST') {
+            $form->bind($request);
+
+            if ($form->isValid()) {
+                $em->persist($form->getData());
+                $em->flush();
+
+                return $this->redirect($this->generateUrl(
+                    'acme_blog_post'
+                ));
+            }
+        }
+
+
+        return $this->render('AcmeBlogBundle:Default:post_tag_edit.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
 }
