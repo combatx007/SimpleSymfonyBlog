@@ -20,7 +20,14 @@ class Tag
     /**
      * @ORM\Column(name="text", type="string", length=255)
      */
-    private $text;
+    protected $text;
+
+    /**
+     * @var ArrayCollection
+     *
+     * @ORM\ManyToMany(targetEntity="\BlogBundle\Entity\Post", mappedBy="tags")
+     */
+    private $posts;
 
     public function __construct($text = null)
     {
