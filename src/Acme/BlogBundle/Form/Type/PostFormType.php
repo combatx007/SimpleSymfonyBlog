@@ -18,7 +18,7 @@ class PostFormType extends AbstractType
             ->add('post')
             ->add('description')
             ->add('keyword')
-            ->add('tags')
+            ->add('tags', null, ['expanded' => true])
         ;
     }
 
