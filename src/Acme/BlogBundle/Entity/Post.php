@@ -44,7 +44,7 @@ class Post
     protected $user;
 
     /**
-     * Tags for post
+     * Comments for post
      *
      * @var ArrayCollection
      * @ORM\ManyToMany(targetEntity="Acme\BlogBundle\Entity\Comment")
