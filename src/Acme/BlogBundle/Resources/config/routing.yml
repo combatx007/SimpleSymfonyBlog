@@ -36,10 +36,6 @@ acme_blog_admin_page:
         id:  \d+
 
 acme_blog_post_tag:
-    pattern:  /post/tag
+    pattern:  /admin/tag
     defaults: { _controller: AcmeBlogBundle:Default:tag }
-
-acme_blog_post_tag_edit:
-    pattern:  /post/tag/edit
-    defaults: { _controller: AcmeBlogBundle:Default:tagedit }
 

@@ -63,12 +63,10 @@ class DefaultController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $post = $em->find('AcmeBlogBundle:Post', $id);
-        $tags = new Post();
 
         return $this->render('AcmeBlogBundle:Default:post.html.twig', [
             'post' => $post,
             'id' => $id,
-            'tags' => $tags->getTags(),
         ]);
     }
 
