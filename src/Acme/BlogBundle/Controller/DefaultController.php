@@ -71,7 +71,6 @@ class DefaultController extends Controller
 
             if ($form->isValid()) {
                 $em->persist($form->getData());
-                $em->persist($comment->setPost($post));
                 $em->flush();
 
                 return $this->redirect($this->generateUrl(

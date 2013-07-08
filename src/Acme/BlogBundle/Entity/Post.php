@@ -44,7 +44,14 @@ class Post
     protected $user;
 
     /**
-     * @ORM\OneToMany(targetEntity="Acme\BlogBundle\Entity\Comment", mappedBy="post")
+     * Tags for post
+     *
+     * @var ArrayCollection
+     * @ORM\ManyToMany(targetEntity="Acme\BlogBundle\Entity\Comment")
+     * @ORM\JoinTable(name="blog_posts_comments",
+     *      joinColumns={@ORM\JoinColumn(name="post_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="comment_id", referencedColumnName="id", unique=true)}
+     * )
      */
     protected $comments;
 

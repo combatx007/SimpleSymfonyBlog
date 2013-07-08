@@ -22,14 +22,6 @@ class Comment
      */
     protected $text;
 
-    /**
-     * Post of this comment
-     * @var ArrayCollection
-     * @ORM\ManyToOne(targetEntity="Acme\BlogBundle\Entity\Post", inversedBy="comments")
-     * @ORM\JoinColumn(name="post_id", referencedColumnName="id")
-     */
-    protected $post;
-
     public function __construct($text = null)
     {
         $this->text = $text;
