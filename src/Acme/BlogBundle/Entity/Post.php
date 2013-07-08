@@ -344,4 +344,17 @@ class Post
     {
         return $this->tags;
     }
+
+    /**
+     * Set created
+     *
+     * @param \DateTime $created
+     * @return Post
+     */
+    public function setCreated($created)
+    {
+        $this->created = $created;
+    
+        return $this;
+    }
 }

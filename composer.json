@@ -23,7 +23,11 @@
         "doctrine/doctrine-fixtures-bundle": "dev-master",
         "doctrine/doctrine-migrations-bundle": "dev-master",
         "raulfraile/ladybug-bundle": "dev-master",
-        "knplabs/knp-paginator-bundle": "dev-master"
+        "knplabs/knp-paginator-bundle": "dev-master",
+        "friendsofsymfony/rest": "0.8@dev",
+        "sensio/framework-extra-bundle": ">=2.1,<2.4-dev",
+        "ornicar/akismet-bundle": "dev-master",
+        "kriswallsmith/assetic": "1.1.*@dev"
     },
     "scripts": {
         "post-install-cmd": [

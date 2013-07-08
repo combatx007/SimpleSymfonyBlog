@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Acme\BlogBundle\Form\Type\PostFormType;
 use Acme\BlogBundle\Form\Type\TagFormType;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Acme\BlogBundle\Form\Type\CommentFormType;
 
 class DefaultController extends Controller
@@ -58,14 +59,31 @@ class DefaultController extends Controller
         ]);
     }
 
-    public function postAction($id)
+    public function postAction($id, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
         $post = $em->find('AcmeBlogBundle:Post', $id);
 
+        $comment = new Comment();
+        $form = $this->createForm(new CommentFormType(), $comment);
+        if ($request->getMethod() == 'POST') {
+            $form->bind($request);
+
+            if ($form->isValid()) {
+                $em->persist($form->getData());
+                $em->persist($comment->setPost($post));
+                $em->flush();
+
+                return $this->redirect($this->generateUrl(
+                    'acme_blog_homepage'
+                ));
+            }
+        }
+
         return $this->render('AcmeBlogBundle:Default:post.html.twig', [
             'post' => $post,
             'id' => $id,
+            'form' => $form->createView(),
         ]);
     }
 
@@ -214,7 +232,7 @@ class DefaultController extends Controller
         ]);
     }
 
-    public function tagsAction($id, Request $request)
+    public function tagsAction($id)
     {
         $em = $this->getDoctrine()->getManager();
         $tag = $em->find('AcmeBlogBundle:Tag', $id);

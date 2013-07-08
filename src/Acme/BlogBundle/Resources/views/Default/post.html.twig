@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="{{ post.description }}">
     <meta name="author" content="">
+
 {% endblock %}
 
 {% block text %}
@@ -47,7 +48,11 @@
 
             <p><h2>Комментарии</h2></p>
             <p>
-                {% include 'FOSCommentBundle:Thread:async.html.twig' with {'id': 'post.id'} %}
+                <form action="{{ path('acme_blog_post') }}" method="post" {{ form_enctype(form) }}>
+                    {{ form_label(form.text, null, {'label': 'Текст комментария', 'label_attr': {'class': 'text-info'}}) }}
+                    {{ form_widget(form.text, {'attr': {'class': '.span8'}}) }}
+                {{ form_rest(form) }}
+                <input type="submit" class="btn btn-primary" />
             </p>
         </div>
     </div>

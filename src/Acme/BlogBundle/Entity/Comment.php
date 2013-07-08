@@ -3,13 +3,12 @@
 namespace Acme\BlogBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use FOS\CommentBundle\Entity\Comment as BaseComment;
+use Doctrine\Common\Collections\ArrayCollection as ArrayCollection;
 
 /**
  * @ORM\Entity
- * @ORM\ChangeTrackingPolicy("DEFERRED_EXPLICIT")
  */
-class Comment extends BaseComment
+class Comment
 {
     /**
      * @ORM\Id
@@ -19,12 +18,22 @@ class Comment extends BaseComment
     protected $id;
 
     /**
-     * Thread of this comment
-     *
-     * @var Thread
-     * @ORM\ManyToOne(targetEntity="Acme\BlogBundle\Entity\Thread")
+     * @ORM\Column(name="text", type="string", length=255)
      */
-    protected $thread;
+    protected $text;
+
+    /**
+     * Post of this comment
+     * @var ArrayCollection
+     * @ORM\ManyToOne(targetEntity="Acme\BlogBundle\Entity\Post", inversedBy="comments")
+     * @ORM\JoinColumn(name="post_id", referencedColumnName="id")
+     */
+    protected $post;
+
+    public function __construct($text = null)
+    {
+        $this->text = $text;
+    }
 
     /**
      * Get id
@@ -37,25 +46,48 @@ class Comment extends BaseComment
     }
 
     /**
-     * Set thread
+     * Set text
      *
-     * @param \Acme\BlogBundle\Entity\Thread $thread
+     * @param string $text
      * @return Comment
      */
-    public function settThread(\Acme\BlogBundle\Entity\Thread $thread = null)
+    public function setText($text)
     {
-        $this->thread = $thread;
+        $this->text = $text;
     
         return $this;
     }
 
     /**
-     * Get thread
+     * Get text
      *
-     * @return \Acme\BlogBundle\Entity\Thread 
+     * @return string 
      */
-    public function getThread()
+    public function getText()
     {
-        return $this->thread;
+        return $this->text;
+    }
+
+    /**
+     * Set post
+     *
+     * @param \Acme\BlogBundle\Entity\Post $post
+     * @return Comment
+     */
+    public function setPost(\Acme\BlogBundle\Entity\Post $post = null)
+    {
+        $this->post = $post;
+    
+        return $this;
+    }
+
+    /**
+     * Get post
+     *
+     * @return \Acme\BlogBundle\Entity\Post
+     */
+    public function getPost()
+    {
+        return $this->post;
     }
 }
