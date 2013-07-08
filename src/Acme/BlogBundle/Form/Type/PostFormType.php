@@ -13,12 +13,13 @@ class PostFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('title', 'text')
-            ->add('annotation', 'textarea')
-            ->add('post', 'textarea')
-            ->add('description', 'text')
-            ->add('keyword', 'text')
-            ->getForm();
+            ->add('title')
+            ->add('annotation')
+            ->add('post')
+            ->add('description')
+            ->add('keyword')
+            ->add('tags', null, ['expanded' => true])
+        ;
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)
