@@ -25,7 +25,7 @@ class Tag
     /**
      * @var ArrayCollection
      *
-     * @ORM\ManyToMany(targetEntity="\BlogBundle\Entity\Post", mappedBy="tags")
+     * @ORM\ManyToMany(targetEntity="Acme\BlogBundle\Entity\Post", mappedBy="tags")
      */
     private $posts;
 
@@ -98,5 +98,10 @@ class Tag
     public function getPosts()
     {
         return $this->posts;
+    }
+
+    public function __toString()
+    {
+        return $this->getText();
     }
 }

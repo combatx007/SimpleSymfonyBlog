@@ -74,8 +74,8 @@ class Post
      * @var ArrayCollection
      * @ORM\ManyToMany(targetEntity="Acme\BlogBundle\Entity\Tag")
      * @ORM\JoinTable(name="blog_posts_tags",
-     * joinColumns={@ORM\JoinColumn(name="post_id", referencedColumnName="id")},
-     * inverseJoinColumns={@ORM\JoinColumn(name="tag_id", referencedColumnName="id")}
+     *      joinColumns={@ORM\JoinColumn(name="post_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="tag_id", referencedColumnName="id")}
      * )
      */
     private $tags;
@@ -175,19 +175,6 @@ class Post
     public function getPost()
     {
         return $this->post;
-    }
-
-    /**
-     * Set created
-     *
-     * @param \DateTime $created
-     * @return Post
-     */
-    public function setCreated($created)
-    {
-        $this->created = $created;
-    
-        return $this;
     }
 
     /**
