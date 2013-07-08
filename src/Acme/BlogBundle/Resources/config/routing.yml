@@ -39,3 +39,7 @@ acme_blog_post_tag:
     pattern:  /admin/tag
     defaults: { _controller: AcmeBlogBundle:Default:tag }
 
+acme_blog_view_tag:
+    pattern:  /post/tag/{id}
+    defaults: { _controller: AcmeBlogBundle:Default:tags, id:1 }
+

@@ -10,7 +10,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Acme\BlogBundle\Form\Type\PostFormType;
 use Acme\BlogBundle\Form\Type\TagFormType;
-use Acme\BlogBundle\Form\Type\TagsFormType;
 use Acme\BlogBundle\Form\Type\CommentFormType;
 
 class DefaultController extends Controller
@@ -215,27 +214,13 @@ class DefaultController extends Controller
         ]);
     }
 
-    public function tageditAction(Request $request)
+    public function tagsAction($id, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-        $tag = $em->getRepository('AcmeBlogBundle:Tag')->findAll();
-        $form = $this->createForm(new TagFormType(), $tag);
-        if ($request->getMethod() == 'POST') {
-            $form->bind($request);
+        $tag = $em->find('AcmeBlogBundle:Tag', $id);
 
-            if ($form->isValid()) {
-                $em->persist($form->getData());
-                $em->flush();
-
-                return $this->redirect($this->generateUrl(
-                    'acme_blog_post'
-                ));
-            }
-        }
-
-
-        return $this->render('AcmeBlogBundle:Default:post_tag_edit.html.twig', [
-            'form' => $form->createView(),
+        return $this->render('AcmeBlogBundle:Default:tag_posts.html.twig', [
+            'tag' => $tag,
         ]);
     }
 }

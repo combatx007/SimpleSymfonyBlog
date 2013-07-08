@@ -1,0 +1,61 @@
+{% extends '::base.html.twig' %}
+
+{% block head %}
+<head>
+    {% block meta %}
+    <metak charset="utf-8">
+        <title>{% block title %}Посты с тегом "{{ tag.text }}"{% endblock %}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="{{ tag.text }}">
+        <meta name="author" content="">
+
+     {% endblock %}
+    <!-- Le styles -->
+    {% block stylesheets %}
+        <link href="{{ app.request.basePath }}/css/bootstrap.css" rel="stylesheet">
+        <style type="text/css">
+            body {
+                padding-top: 60px;
+                padding-bottom: 40px;
+            }
+            .sidebar-nav {
+                padding: 9px 0;
+            }
+        </style>
+        <link href="{{ app.request.basePath }}/css/bootstrap-responsive.css" rel="stylesheet">
+    {% endblock %}
+</head>
+{% endblock %}
+{% block text %}
+    <div class="span8">
+        <div class="page-header">
+            <h1>Simple-blogs - блог на Symfony 2</h1>
+        </div>
+        {% for post in tag.posts %}
+            <p><h2><a href="{{ app.request.basePath }}/post/{{ post.id }}">{{ post.title }}</a></h2></p>
+            <p>{{ post.annotation }}</p>
+        {% endfor %}
+    </div>
+{% endblock %}
+
+{% block sidebar %}
+    <div class="span2 offset1">
+        <ul class="nav nav-list">
+            <li class="nav-header">Меню</li>
+            <li class="active"><a href="{{ app.request.basePath }}/">На главную</a></li>
+            {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+                <li><a href="{{ app.request.basePath }}/post/add">Добавить пост</a></li>
+            {% endif %}
+            {% if is_granted('ROLE_ADMIN') %}
+                <li><a href="{{ app.request.basePath }}/admin/">Админка</a></li>
+                <li><a href="{{ app.request.basePath }}/admin/tag">Добавить теги</a></li>
+            {% endif %}
+            <li><a href="{{ app.request.basePath }}/">Ссылка</a></li>
+            <li><a href="{{ app.request.basePath }}/">Ссылка</a></li>
+            <li class="nav-header">Облако тегов</li>
+            <li>разные теги бла бла бла</li>
+            <li class="nav-header">3 блок</li>
+            <li>не помню для чего</li>
+        </ul>
+    </div>
+{% endblock %}

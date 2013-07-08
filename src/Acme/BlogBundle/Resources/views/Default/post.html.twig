@@ -41,8 +41,8 @@
     <div class="span8">
         <div class="page-header">
             <h2>Метки:</h2>
-            {% for post in post %}
-            <p>{{ post.tags }}</p>
+            {% for tag in post.tags %}
+            <p><a href="{{ app.request.basePath }}/post/tag/{{ tag.id }}">{{ tag }}</a></p>
             {% endfor %}
 
             <p><h2>Комментарии</h2></p>
