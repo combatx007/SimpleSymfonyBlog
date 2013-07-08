@@ -18,7 +18,8 @@ framework:
     default_locale:  "%locale%"
     trusted_proxies: ~
     session:         ~
-    fragments:       ~	
+    fragments:       ~
+    http_method_override: true
 
 # Twig Configuration
 twig:
@@ -75,5 +76,5 @@ fos_comment:
     db_driver: orm
     class:
         model:
-            comment: Acme\BlogBundle\Entity\Comment
-            thread: Acme\BlogBundle\Entity\Thread
+            comment: MyProject\MyBundle\Entity\Comment
+            thread: MyProject\MyBundle\Entity\Thread

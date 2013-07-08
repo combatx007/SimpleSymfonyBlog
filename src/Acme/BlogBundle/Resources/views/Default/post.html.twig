@@ -44,7 +44,7 @@
             <p>{{ tags }}</p>
             <p><h2>Комментарии</h2></p>
             <p>
-                {% include 'FOSCommentBundle:Thread:async.html.twig' with {'id': id } %}
+                {% include 'FOSCommentBundle:Thread:async.html.twig' with {'id': 'post.id'} %}
             </p>
         </div>
     </div>

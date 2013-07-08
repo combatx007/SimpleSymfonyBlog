@@ -12,3 +12,10 @@ _configurator:
 
 _main:
     resource: routing.yml
+
+fos_comment_api:
+    type: rest
+    resource: "@FOSCommentBundle/Resources/config/routing.yml"
+    prefix: /api
+    defaults: { _format: html }
+

@@ -25,9 +25,9 @@ class Tag
     /**
      * @var ArrayCollection
      *
-     * @ORM\ManyToMany(targetEntity="\BlogBundle\Entity\Post", mappedBy="tags")
+     * @ORM\ManyToMany(targetEntity="Acme\BlogBundle\Entity\Post", mappedBy="tags")
      */
-    private $posts;
+    protected $posts;
 
     public function __construct($text = null)
     {

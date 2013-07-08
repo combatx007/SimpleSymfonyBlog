@@ -37,6 +37,19 @@ class Comment extends BaseComment
     }
 
     /**
+     * Set thread
+     *
+     * @param \Acme\BlogBundle\Entity\Thread $thread
+     * @return Comment
+     */
+    public function settThread(\Acme\BlogBundle\Entity\Thread $thread = null)
+    {
+        $this->thread = $thread;
+    
+        return $this;
+    }
+
+    /**
      * Get thread
      *
      * @return \Acme\BlogBundle\Entity\Thread 
@@ -45,25 +58,4 @@ class Comment extends BaseComment
     {
         return $this->thread;
     }
-
-    /**
-     * Set thread
-     *
-     * @param \Acme\BlogBundle\Entity\Thread $thread
-     * @return Comment
-     */
-
-    /**
-     * Set thread
-     *
-     * @param \Acme\BlogBundle\Entity\Thread $thread
-     * @return Comment
-     */
-
-    /**
-     * Set thread
-     *
-     * @param \Acme\BlogBundle\Entity\Thread $thread
-     * @return Comment
-     */
 }
