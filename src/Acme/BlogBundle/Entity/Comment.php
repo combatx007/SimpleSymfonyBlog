@@ -22,9 +22,21 @@ class Comment
      */
     protected $text;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="Acme\UserBundle\Entity\User", inversedBy="comments")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     */
+    protected $user = null;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    protected $created;
+
     public function __construct($text = null)
     {
         $this->text = $text;
+        $this->created = new \DateTime();
     }
 
     /**
@@ -81,5 +93,51 @@ class Comment
     public function getPost()
     {
         return $this->post;
+    }
+
+    /**
+     * Set created
+     *
+     * @param \DateTime $created
+     * @return Comment
+     */
+    public function setCreated($created)
+    {
+        $this->created = $created;
+    
+        return $this;
+    }
+
+    /**
+     * Get created
+     *
+     * @return \DateTime 
+     */
+    public function getCreated()
+    {
+        return $this->created;
+    }
+
+    /**
+     * Set user
+     *
+     * @param \Acme\UserBundle\Entity\User $user
+     * @return Comment
+     */
+    public function setUser(\Acme\UserBundle\Entity\User $user = null)
+    {
+        $this->user = $user;
+    
+        return $this;
+    }
+
+    /**
+     * Get user
+     *
+     * @return \Acme\UserBundle\Entity\User 
+     */
+    public function getUser()
+    {
+        return $this->user;
     }
 }

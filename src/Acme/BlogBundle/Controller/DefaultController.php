@@ -64,6 +64,7 @@ class DefaultController extends Controller
         $em = $this->getDoctrine()->getManager();
         /** @var Post $post */
         $post = $em->find('AcmeBlogBundle:Post', $id);
+        $user = $this->get('security.context')->getToken()->getUser();
 
         $comment = new Comment();
         $form = $this->createForm(new CommentFormType(), $comment);
@@ -72,11 +73,15 @@ class DefaultController extends Controller
 
             if ($form->isValid()) {
                 $post->addComment($form->getData());
+                if ($this->get('security.context')->getToken()->getUser() !== 'anon.'){
+                   $comment->setUser($this->get('security.context')->getToken()->getUser());
+                }
                 $em->persist($post);
+                $em->persist($comment);
                 $em->flush();
                 //ldd($_POST);
 
-                return $this->redirect($this->generateUrl('acme_blog_homepage'));
+                return $this->redirect($this->generateUrl('acme_blog_post', ['id' => $id]));
             }
         }
 
@@ -84,6 +89,7 @@ class DefaultController extends Controller
             'post' => $post,
             'id' => $id,
             'form' => $form->createView(),
+            'user' => $user,
         ]);
     }
 

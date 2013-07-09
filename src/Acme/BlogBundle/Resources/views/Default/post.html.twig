@@ -45,8 +45,22 @@
             {% for tag in post.tags %}
             <p><a href="{{ app.request.basePath }}/post/tag/{{ tag.id }}">{{ tag }}</a></p>
             {% endfor %}
-
-            <p><h2>Комментарии</h2></p>
+            <p><h2>Комментарии:</h2></p>
+            {% for comment in post.comments %}
+                <div class="page-header">
+                    {% if comment.user == null %}
+                        <p>Автор: Аноним</p>
+                    {% else %}
+                    <p>Автор: {{ comment.user }}</p>
+                    {% endif %}
+                    <p class="pull-right">
+                        <small>
+                            <time datetime="{{ post.created|date('c') }}">{{ post.created|date('l, F j, Y') }}</time>
+                        </small>
+                    </p>
+                    <p>{{ comment.text }}</p>
+                </div>
+            {% endfor %}
             <p>
                 <form action="{{ path('acme_blog_post') }}/{{ id }}" method="post" {{ form_enctype(form) }}>
                     {{ form_label(form.text, null, {'label': 'Текст комментария', 'label_attr': {'class': 'text-info'}}) }}
