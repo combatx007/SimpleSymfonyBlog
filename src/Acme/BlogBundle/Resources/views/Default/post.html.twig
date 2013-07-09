@@ -48,7 +48,7 @@
 
             <p><h2>Комментарии</h2></p>
             <p>
-                <form action="{{ path('acme_blog_post') }}" method="post" {{ form_enctype(form) }}>
+                <form action="{{ path('acme_blog_post') }}/{{ id }}" method="post" {{ form_enctype(form) }}>
                     {{ form_label(form.text, null, {'label': 'Текст комментария', 'label_attr': {'class': 'text-info'}}) }}
                     {{ form_widget(form.text, {'attr': {'class': '.span8'}}) }}
                 {{ form_rest(form) }}
