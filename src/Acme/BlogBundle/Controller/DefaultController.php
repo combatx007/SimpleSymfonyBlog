@@ -72,6 +72,7 @@ class DefaultController extends Controller
             if ($form->isValid()) {
                 $em->persist($form->getData());
                 $em->flush();
+                ldd($_POST);
 
                 return $this->redirect($this->generateUrl(
                     'acme_blog_homepage'
