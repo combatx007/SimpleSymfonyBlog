@@ -62,21 +62,21 @@ class DefaultController extends Controller
     public function postAction($id, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
+        /** @var Post $post */
         $post = $em->find('AcmeBlogBundle:Post', $id);
 
         $comment = new Comment();
         $form = $this->createForm(new CommentFormType(), $comment);
-        if ($request->getMethod() == 'POST') {
+        if ($request->isMethod('POST')) {
             $form->bind($request);
 
             if ($form->isValid()) {
-                $em->persist($form->getData());
+                $post->addComment($form->getData());
+                $em->persist($post);
                 $em->flush();
-                ldd($_POST);
+                //ldd($_POST);
 
-                return $this->redirect($this->generateUrl(
-                    'acme_blog_homepage'
-                ));
+                return $this->redirect($this->generateUrl('acme_blog_homepage'));
             }
         }
 
