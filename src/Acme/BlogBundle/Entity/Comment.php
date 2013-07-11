@@ -33,6 +33,11 @@ class Comment
      */
     protected $created;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    protected $post;
+
     public function __construct($text = null)
     {
         $this->text = $text;
@@ -70,29 +75,6 @@ class Comment
     public function getText()
     {
         return $this->text;
-    }
-
-    /**
-     * Set post
-     *
-     * @param \Acme\BlogBundle\Entity\Post $post
-     * @return Comment
-     */
-    public function setPost(\Acme\BlogBundle\Entity\Post $post = null)
-    {
-        $this->post = $post;
-    
-        return $this;
-    }
-
-    /**
-     * Get post
-     *
-     * @return \Acme\BlogBundle\Entity\Post
-     */
-    public function getPost()
-    {
-        return $this->post;
     }
 
     /**
@@ -139,5 +121,28 @@ class Comment
     public function getUser()
     {
         return $this->user;
+    }
+
+    /**
+     * Set post
+     *
+     * @param integer $post
+     * @return Comment
+     */
+    public function setPost($post)
+    {
+        $this->post = $post;
+    
+        return $this;
+    }
+
+    /**
+     * Get post
+     *
+     * @return integer 
+     */
+    public function getPost()
+    {
+        return $this->post;
     }
 }

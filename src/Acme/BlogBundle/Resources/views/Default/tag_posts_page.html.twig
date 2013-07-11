@@ -36,30 +36,54 @@
             <p><h2><a href="{{ app.request.basePath }}/post/{{ post.id }}">{{ post.title }}</a></h2></p>
             <p>{{ post.annotation }}</p>
         {% endfor %}
+
         <div class="pagination">
             <ul>
-            {% if count > 1 %}
-                {% if count < 5 %}
+                {% if count > 1 %}
+                <li><a href="{{ app.request.basePath }}/post/tag/{{ id }}/page/1">Start</a></li>
 
+                {% if idp not in [1] %}
+                    <li><a href="{{ app.request.basePath }}/post/tag/{{ id }}/page/{{ idp - 1 }}">Prev</a></li>
+                {% endif %}
+
+                {% if idp < 5 and count < 6 %}
                     {% for i in 1..count %}
                         <li><a href="{{ app.request.basePath }}/post/tag/{{ id }}/page/{{ i }}">{{ i }}</a></li>
                     {% endfor %}
+                {% elseif idp < 5 and count > 5 %}
+                    {% if idp >2 %}
+                    <li><a href="{{ app.request.basePath }}/post/tag/{{ id }}/page/{{ idp - 2 }}">{{ idp - 2 }}</a></li>
+                    {% endif %}
+                    {% if idp >1 %}
+                    <li><a href="{{ app.request.basePath }}/post/tag/{{ id }}/page/{{ idp - 1 }}">{{ idp - 1 }}</a></li>
+                    {% endif %}
 
-                {% else %}
-                    {% for i in 1..5 %}
-                        <li><a href="{{ app.request.basePath }}/post/tag/{{ id }}/page/{{ i }}">{{ i }}</a></li>
-                    {% endfor %}
-
+                    <li><a href="{{ app.request.basePath }}/post/tag/{{ id }}/page/{{ idp }}">{{ idp }}</a></li>
+                    <li><a href="{{ app.request.basePath }}/post/tag/{{ id }}/page/{{ idp + 1 }}">{{ idp + 1 }}</a></li>
+                    <li><a href="{{ app.request.basePath }}/post/tag/{{ id }}/page/{{ idp + 2 }}">{{ idp + 2 }}</a></li>
                 {% endif %}
 
-                <li><a href="{{ app.request.basePath }}/post/tag/{{ id }}/page/2">Next</a></li>
-                <li><a href="{{ app.request.basePath }}/post/tag/{{ id }}/page/{{ count }}">End</a></li>
-            {% endif %}
+                {% if idp > 4 %}
+                    <li><a href="{{ app.request.basePath }}/post/tag/{{ id }}/page/{{ idp - 2 }}">{{ idp - 2 }}</a></li>
+                    <li><a href="{{ app.request.basePath }}/post/tag/{{ id }}/page/{{ idp - 1 }}">{{ idp - 1 }}</a></li>
+                    <li><a href="{{ app.request.basePath }}/post/tag/{{ id }}/page/{{ idp }}">{{ idp }}</a></li>
+                {% if count >= idp + 1 %}
+                    <li><a href="{{ app.request.basePath }}/post/tag/{{ id }}/page/{{ idp + 1 }}">{{ idp + 1 }}</a></li>
+                {% endif %}
+                {% if count >= idp + 2 %}
+                    <li><a href="{{ app.request.basePath }}/post/tag/{{ id }}/page/{{ idp + 2 }}">{{ idp + 2 }}</a></li>
+                {% endif %}
 
-             </ul>
+
+                {% endif %}
+            {% if count > idp %}
+                <li><a href="{{ app.request.basePath }}/post/tag/{{ id }}/page/{{ idp + 1 }}">Next</a></li>
+             {% endif %}
+                <li><a href="{{ app.request.basePath }}/post/tag/{{ id }}/page/{{ count }}">End</a></li>
+                {% endif %}
+            </ul>
         </div>
     </div>
-
 {% endblock %}
 
 {% block sidebar %}

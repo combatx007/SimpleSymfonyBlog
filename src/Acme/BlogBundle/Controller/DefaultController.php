@@ -12,6 +12,7 @@ use Acme\BlogBundle\Form\Type\PostFormType;
 use Acme\BlogBundle\Form\Type\TagFormType;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Acme\BlogBundle\Form\Type\CommentFormType;
+use Doctrine\Common\Cache\ApcCache;
 
 class DefaultController extends Controller
 {
@@ -66,6 +67,19 @@ class DefaultController extends Controller
         $post = $em->find('AcmeBlogBundle:Post', $id);
         $user = $this->get('security.context')->getToken()->getUser();
 
+        $limit = 5;
+        $dql = "SELECT u FROM AcmeBlogBundle:Comment u WHERE u.post = $id";
+        $query = $em->createQuery($dql)
+            ->setFirstResult(0)
+            ->setMaxResults($limit);
+
+        $comments = $query->getResult();
+
+        $dql = "SELECT COUNT(u.id) FROM AcmeBlogBundle:Comment u WHERE u.post = $id";
+        $query = $em->createQuery($dql);
+        $count = ceil($query->getSingleScalarResult() / $limit);
+        $idp = 0;
+
         $comment = new Comment();
         $form = $this->createForm(new CommentFormType(), $comment);
         if ($request->isMethod('POST')) {
@@ -76,10 +90,8 @@ class DefaultController extends Controller
                 if ($this->get('security.context')->getToken()->getUser() !== 'anon.'){
                    $comment->setUser($this->get('security.context')->getToken()->getUser());
                 }
-                $em->persist($post);
-                $em->persist($comment);
+                $comment->setPost($id);
                 $em->flush();
-                //ldd($_POST);
 
                 return $this->redirect($this->generateUrl('acme_blog_post', ['id' => $id]));
             }
@@ -90,6 +102,9 @@ class DefaultController extends Controller
             'id' => $id,
             'form' => $form->createView(),
             'user' => $user,
+            'comments' => $comments,
+            'count' => $count,
+            'idp' => $idp,
         ]);
     }
 
@@ -242,9 +257,101 @@ class DefaultController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $tag = $em->find('AcmeBlogBundle:Tag', $id);
+        $limit = 3;
+        $dql = "SELECT u, a FROM AcmeBlogBundle:Post u JOIN u.tags a WHERE a.id = $id";
+        $query = $em->createQuery($dql)
+            ->setFirstResult(0)
+            ->setMaxResults($limit);
+
+        $post = $query->getResult();
+
+        $dql = "SELECT COUNT(a.id) FROM AcmeBlogBundle:Post u JOIN u.tags a WHERE a.id = $id";
+        $query = $em->createQuery($dql);
+        $count = ceil($query->getSingleScalarResult() / $limit);
+        $idp = 1;
 
         return $this->render('AcmeBlogBundle:Default:tag_posts.html.twig', [
             'tag' => $tag,
+            'post' => $post,
+            'count' => $count,
+            'id' => $id,
+            'idp' => $idp,
+        ]);
+    }
+
+    public function tagspageAction($id, $idp)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $tag = $em->find('AcmeBlogBundle:Tag', $id);
+        $limit = 3;
+        $offset = ($idp - 1) * $limit;
+        $dql = "SELECT u, a FROM AcmeBlogBundle:Post u JOIN u.tags a WHERE a.id = $id";
+        $query = $em->createQuery($dql)
+            ->setFirstResult($offset)
+            ->setMaxResults($limit);
+
+        $post = $query->getResult();
+
+        $dql = "SELECT COUNT(a.id) FROM AcmeBlogBundle:Post u JOIN u.tags a WHERE a.id = $id";
+        $query = $em->createQuery($dql);
+        $count = ceil($query->getSingleScalarResult() / $limit);
+
+        return $this->render('AcmeBlogBundle:Default:tag_posts_page.html.twig', [
+            'tag' => $tag,
+            'post' => $post,
+            'count' => $count,
+            'id' => $id,
+            'idp' => $idp,
+        ]);
+    }
+
+    public function commentAction($id, $idp, Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        /** @var Post $post */
+        $post = $em->find('AcmeBlogBundle:Post', $id);
+        $user = $this->get('security.context')->getToken()->getUser();
+
+        $limit = 5;
+        $offset = ($idp - 1) * $limit;
+        $dql = "SELECT u FROM AcmeBlogBundle:Comment u WHERE u.post = $id";
+        $query = $em->createQuery($dql)
+            ->setFirstResult($offset)
+            ->setMaxResults($limit);
+
+        $comments = $query->getResult();
+
+        $dql = "SELECT COUNT(u.id) FROM AcmeBlogBundle:Comment u WHERE u.post = $id";
+        $query = $em->createQuery($dql);
+        $count = ceil($query->getSingleScalarResult() / $limit);
+
+        $comment = new Comment();
+        $form = $this->createForm(new CommentFormType(), $comment);
+        if ($request->isMethod('POST')) {
+            $form->bind($request);
+
+            if ($form->isValid()) {
+                $post->addComment($form->getData());
+                if ($this->get('security.context')->getToken()->getUser() !== 'anon.'){
+                    $comment->setUser($this->get('security.context')->getToken()->getUser());
+                }
+                $comment->setPost($id);
+                $em->flush();
+
+
+                return $this->redirect($this->generateUrl('acme_blog_post', ['id' => $id]));
+            }
+        }
+
+        return $this->render('AcmeBlogBundle:Default:post.html.twig', [
+            'form' => $form->createView(),
+            'user' => $user,
+            'comments' => $comments,
+            'post' => $post,
+            'count' => $count,
+            'id' => $id,
+            'idp' => $idp,
         ]);
     }
 }

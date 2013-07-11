@@ -42,3 +42,13 @@ acme_blog_post_tag:
 acme_blog_view_tag:
     pattern:  /post/tag/{id}
     defaults: { _controller: AcmeBlogBundle:Default:tags, id:1 }
+
+acme_blog_view_tag_page:
+    pattern:  /post/tag/{id}/page/{idp}
+    defaults: { _controller: AcmeBlogBundle:Default:tagspage, id:1, idp:1 }
+
+acme_blog_post_comment_page:
+    pattern:  /post/{id}/comment/{idp}
+    defaults: { _controller: AcmeBlogBundle:Default:comment, id:1, idp:1 }
+
+
