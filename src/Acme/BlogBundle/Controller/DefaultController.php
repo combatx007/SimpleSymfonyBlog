@@ -67,19 +67,6 @@ class DefaultController extends Controller
         $post = $em->find('AcmeBlogBundle:Post', $id);
         $user = $this->get('security.context')->getToken()->getUser();
 
-        $limit = 5;
-        $dql = "SELECT u FROM AcmeBlogBundle:Comment u WHERE u.post = $id";
-        $query = $em->createQuery($dql)
-            ->setFirstResult(0)
-            ->setMaxResults($limit);
-
-        $comments = $query->getResult();
-
-        $dql = "SELECT COUNT(u.id) FROM AcmeBlogBundle:Comment u WHERE u.post = $id";
-        $query = $em->createQuery($dql);
-        $count = ceil($query->getSingleScalarResult() / $limit);
-        $idp = 0;
-
         $comment = new Comment();
         $form = $this->createForm(new CommentFormType(), $comment);
         if ($request->isMethod('POST')) {
@@ -102,9 +89,6 @@ class DefaultController extends Controller
             'id' => $id,
             'form' => $form->createView(),
             'user' => $user,
-            'comments' => $comments,
-            'count' => $count,
-            'idp' => $idp,
         ]);
     }
 
@@ -298,56 +282,6 @@ class DefaultController extends Controller
 
         return $this->render('AcmeBlogBundle:Default:tag_posts_page.html.twig', [
             'tag' => $tag,
-            'post' => $post,
-            'count' => $count,
-            'id' => $id,
-            'idp' => $idp,
-        ]);
-    }
-
-    public function commentAction($id, $idp, Request $request)
-    {
-        $em = $this->getDoctrine()->getManager();
-
-        /** @var Post $post */
-        $post = $em->find('AcmeBlogBundle:Post', $id);
-        $user = $this->get('security.context')->getToken()->getUser();
-
-        $limit = 5;
-        $offset = ($idp - 1) * $limit;
-        $dql = "SELECT u FROM AcmeBlogBundle:Comment u WHERE u.post = $id";
-        $query = $em->createQuery($dql)
-            ->setFirstResult($offset)
-            ->setMaxResults($limit);
-
-        $comments = $query->getResult();
-
-        $dql = "SELECT COUNT(u.id) FROM AcmeBlogBundle:Comment u WHERE u.post = $id";
-        $query = $em->createQuery($dql);
-        $count = ceil($query->getSingleScalarResult() / $limit);
-
-        $comment = new Comment();
-        $form = $this->createForm(new CommentFormType(), $comment);
-        if ($request->isMethod('POST')) {
-            $form->bind($request);
-
-            if ($form->isValid()) {
-                $post->addComment($form->getData());
-                if ($this->get('security.context')->getToken()->getUser() !== 'anon.'){
-                    $comment->setUser($this->get('security.context')->getToken()->getUser());
-                }
-                $comment->setPost($id);
-                $em->flush();
-
-
-                return $this->redirect($this->generateUrl('acme_blog_post', ['id' => $id]));
-            }
-        }
-
-        return $this->render('AcmeBlogBundle:Default:post.html.twig', [
-            'form' => $form->createView(),
-            'user' => $user,
-            'comments' => $comments,
             'post' => $post,
             'count' => $count,
             'id' => $id,

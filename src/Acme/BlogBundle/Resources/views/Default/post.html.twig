@@ -46,7 +46,7 @@
             <p><a href="{{ app.request.basePath }}/post/tag/{{ tag.id }}">{{ tag }}</a></p>
             {% endfor %}
             <p><h2>Комментарии:</h2></p>
-            {% for comment in comments %}
+            {% for comment in post.comments %}
                 <div class="page-header">
                     {% if comment.user == null %}
                         <p>Автор: Аноним</p>
@@ -61,73 +61,7 @@
                     <p>{{ comment.text }}</p>
                 </div>
             {% endfor %}
-            <div class="pagination">
-                <ul>
-                    {% if idp == 0 %}
-                    {% if count > 1 %}
-                        {% if count < 5 %}
 
-                            {% for i in 1..count %}
-                                <li><a href="{{ app.request.basePath }}/post/{{ id }}/comment/{{ i }}">{{ i }}</a></li>
-                            {% endfor %}
-
-                        {% else %}
-                            {% for i in 1..5 %}
-                                <li><a href="{{ app.request.basePath }}/post/{{ id }}/comment/{{ i }}">{{ i }}</a></li>
-                            {% endfor %}
-
-                        {% endif %}
-
-                        <li><a href="{{ app.request.basePath }}/post/{{ id }}/comment/2">Next</a></li>
-                        <li><a href="{{ app.request.basePath }}/post/{{ id }}/comment/{{ count }}">End</a></li>
-                    {% endif %}
-                        {% else %}
-                            {% if count > 1 %}
-                                    <li><a href="{{ app.request.basePath }}/post/{{ id }}/comment/1">Start</a></li>
-
-                                    {% if idp not in [1] %}
-                                        <li><a href="{{ app.request.basePath }}/post/{{ id }}/comment/{{ idp - 1 }}">Prev</a></li>
-                                    {% endif %}
-
-                                    {% if idp < 5 and count < 6 %}
-                                        {% for i in 1..count %}
-                                            <li><a href="{{ app.request.basePath }}/post/{{ id }}/comment/{{ i }}">{{ i }}</a></li>
-                                        {% endfor %}
-                                    {% elseif idp < 5 and count > 5 %}
-                                        {% if idp >2 %}
-                                            <li><a href="{{ app.request.basePath }}/post/{{ id }}/comment/{{ idp - 2 }}">{{ idp - 2 }}</a></li>
-                                        {% endif %}
-                                        {% if idp >1 %}
-                                            <li><a href="{{ app.request.basePath }}/post/{{ id }}/comment/{{ idp - 1 }}">{{ idp - 1 }}</a></li>
-                                        {% endif %}
-
-                                        <li><a href="{{ app.request.basePath }}/post/{{ id }}/comment/{{ idp }}">{{ idp }}</a></li>
-                                        <li><a href="{{ app.request.basePath }}/post/{{ id }}/comment/{{ idp + 1 }}">{{ idp + 1 }}</a></li>
-                                        <li><a href="{{ app.request.basePath }}/post/{{ id }}/comment/{{ idp + 2 }}">{{ idp + 2 }}</a></li>
-                                    {% endif %}
-
-                                    {% if idp > 4 %}
-                                        <li><a href="{{ app.request.basePath }}/post/{{ id }}/comment/{{ idp - 2 }}">{{ idp - 2 }}</a></li>
-                                        <li><a href="{{ app.request.basePath }}/post/{{ id }}/comment/{{ idp - 1 }}">{{ idp - 1 }}</a></li>
-                                        <li><a href="{{ app.request.basePath }}/post/{{ id }}/comment/{{ idp }}">{{ idp }}</a></li>
-                                        {% if count >= idp + 1 %}
-                                            <li><a href="{{ app.request.basePath }}/post/{{ id }}/comment/{{ idp + 1 }}">{{ idp + 1 }}</a></li>
-                                        {% endif %}
-                                        {% if count >= idp + 2 %}
-                                            <li><a href="{{ app.request.basePath }}/post/{{ id }}/comment/{{ idp + 2 }}">{{ idp + 2 }}</a></li>
-                                        {% endif %}
-
-
-                                    {% endif %}
-                                    {% if count > idp %}
-                                        <li><a href="{{ app.request.basePath }}/post/{{ id }}/comment/{{ idp + 1 }}">Next</a></li>
-                                    {% endif %}
-                                    <li><a href="{{ app.request.basePath }}/post/{{ id }}/comment/{{ count }}">End</a></li>
-                    {% endif %}
-                    {% endif %}
-
-                </ul>
-            </div>
             <p>
                 <form action="{{ path('acme_blog_post') }}/{{ id }}" method="post" {{ form_enctype(form) }}>
                     {{ form_label(form.text, null, {'label': 'Текст комментария', 'label_attr': {'class': 'text-info'}}) }}
