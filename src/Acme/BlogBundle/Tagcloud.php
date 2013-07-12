@@ -10,7 +10,12 @@ class Tagcloud {
 
     protected $em;
 
-    public function check()
+    public function __construct(EntityManager $em)
+    {
+        $this->em = $em;
+    }
+
+    public function check(EntityManager $em)
     {
         $dql = "SELECT a.id FROM AcmeBlogBundle:Post u JOIN u.tags a";
         $query = $em->createQuery($dql);
@@ -47,10 +52,5 @@ class Tagcloud {
             $query = $em->createQuery($dql);
             $result = $query->getResult();
         }
-    }
-
-    public function __construct(EntityManager $em)
-    {
-        $this->em = $em;
     }
 }
