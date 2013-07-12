@@ -29,6 +29,8 @@ use Doctrine\Common\Cache\ApcCache;
             0
         );
 
+        $tagcloud = $this->get('tagcloud')->check();
+
         return $this->render('AcmeBlogBundle:Default:index.html.twig', [
             'posts' => $posts,
             'pages' => $count_pages,

@@ -8,9 +8,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class Tagcloud {
 
+    protected $em;
+
     public function check()
     {
-        $em = $this->get('doctrine.orm.default_entity_manager');
         $dql = "SELECT a.id FROM AcmeBlogBundle:Post u JOIN u.tags a";
         $query = $em->createQuery($dql);
 
@@ -46,5 +47,10 @@ class Tagcloud {
             $query = $em->createQuery($dql);
             $result = $query->getResult();
         }
+    }
+
+    public function __construct(EntityManager $em)
+    {
+        $this->em = $em;
     }
 }
