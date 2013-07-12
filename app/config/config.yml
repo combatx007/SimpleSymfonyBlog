@@ -82,4 +82,4 @@ fos_comment:
 services:
    tagcloud:
      class: Acme\BlogBundle\Tagcloud
-     arguments: [ @doctrine.entity.manager ]
+     arguments: [ @doctrine.orm.entity_manager ]
