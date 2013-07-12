@@ -83,3 +83,6 @@ services:
    tagcloud:
      class: Acme\BlogBundle\Tagcloud
      arguments: [ @doctrine.orm.entity_manager ]
+   tagcloudcall:
+        class: Acme\BlogBundle\Tagcloudcall
+        arguments: [ @doctrine.orm.entity_manager ]

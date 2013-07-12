@@ -77,7 +77,9 @@
             <li><a href="{{ app.request.basePath }}/">Ссылка</a></li>
             <li><a href="{{ app.request.basePath }}/">Ссылка</a></li>
             <li class="nav-header">Облако тегов</li>
-            <li>разные теги бла бла бла</li>
+            {% block tagcloud %}
+                {{ parent() }}
+            {% endblock %}
             <li class="nav-header">3 блок</li>
             <li>не помню для чего</li>
         </ul>

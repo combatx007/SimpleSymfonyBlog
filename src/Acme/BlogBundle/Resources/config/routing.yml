@@ -7,7 +7,7 @@ acme_blog_page:
     requirements:
         id:  \d+
 acme_blog_post:
-    pattern:  /post/{id}_{title}
+    pattern:  /post/{id}
     defaults: { _controller: AcmeBlogBundle:Default:post, id : 1 }
     requirements:
         id:  \d+
@@ -50,5 +50,6 @@ acme_blog_view_tag_page:
 acme_blog_post_comment_page:
     pattern:  /post/{id}/comment/{idp}
     defaults: { _controller: AcmeBlogBundle:Default:comment, id:1, idp:1 }
+
 
 

@@ -11,7 +11,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Acme\BlogBundle\Form\Type\PostFormType;
 use Acme\BlogBundle\Form\Type\TagFormType;
 use Acme\BlogBundle\Form\Type\CommentFormType;
-use Doctrine\Common\Cache\ApcCache;
 
     class DefaultController extends Controller
 {
@@ -29,12 +28,15 @@ use Doctrine\Common\Cache\ApcCache;
             0
         );
 
-        $tagcloud = $this->get('tagcloud')->check();
+        $tagcloudcall = $this->get('tagcloudcall')->check();
+
+
 
         return $this->render('AcmeBlogBundle:Default:index.html.twig', [
             'posts' => $posts,
             'pages' => $count_pages,
-            'id' => '1'
+            'id' => '1',
+            'tagcloudcall' => $tagcloudcall,
         ]);
     }
 
@@ -54,10 +56,13 @@ use Doctrine\Common\Cache\ApcCache;
             $offset
         );
 
+        $tagcloudcall = $this->get('tagcloudcall')->check();
+
         return $this->render('AcmeBlogBundle:Default:page.html.twig', [
             'posts' => $posts,
             'pages' => $count_pages,
-            'id' => $id
+            'id' => $id,
+            'tagcloudcall' => $tagcloudcall,
         ]);
     }
 
@@ -85,11 +90,14 @@ use Doctrine\Common\Cache\ApcCache;
             }
         }
 
+        $tagcloudcall = $this->get('tagcloudcall')->check();
+
         return $this->render('AcmeBlogBundle:Default:post.html.twig', [
             'post' => $post,
             'id' => $id,
             'form' => $form->createView(),
             'user' => $user,
+            'tagcloudcall' => $tagcloudcall,
         ]);
     }
 
@@ -105,6 +113,7 @@ use Doctrine\Common\Cache\ApcCache;
             if ($form->isValid()) {
                 $em->persist($form->getData());
                 $em->flush();
+                $this->get('tagcloud')->check();
 
 
                 return $this->redirect($this->generateUrl(
@@ -114,10 +123,12 @@ use Doctrine\Common\Cache\ApcCache;
             }
         }
 
+        $tagcloudcall = $this->get('tagcloudcall')->check();
 
         return $this->render('AcmeBlogBundle:Default:post_edit.html.twig', [
             'form' => $form->createView(),
             'id' => $id,
+            'tagcloudcall' => $tagcloudcall,
         ]);
     }
 
@@ -134,6 +145,7 @@ use Doctrine\Common\Cache\ApcCache;
             if ($form->isValid()) {
                 $em->persist($form->getData());
                 $em->flush();
+                $this->get('tagcloud')->check();
 
                 return $this->redirect($this->generateUrl(
                     'acme_blog_homepage'
@@ -141,9 +153,11 @@ use Doctrine\Common\Cache\ApcCache;
             }
         }
 
+        $tagcloudcall = $this->get('tagcloudcall')->check();
 
         return $this->render('AcmeBlogBundle:Default:post_add.html.twig', [
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'tagcloudcall' => $tagcloudcall,
         ]);
     }
 
@@ -161,10 +175,13 @@ use Doctrine\Common\Cache\ApcCache;
             0
         );
 
+        $tagcloudcall = $this->get('tagcloudcall')->check();
+
         return $this->render('AcmeBlogBundle:Default:admin.html.twig', [
             'posts' => $posts,
             'pages' => $count_pages,
-            'id' => '1'
+            'id' => '1',
+            'tagcloudcall' => $tagcloudcall,
         ]);
     }
 
@@ -184,10 +201,11 @@ use Doctrine\Common\Cache\ApcCache;
             $offset
         );
 
+
         return $this->render('AcmeBlogBundle:Default:admin.html.twig', [
             'posts' => $posts,
             'pages' => $count_pages,
-            'id' => $id
+            'id' => $id,
         ]);
     }
 
@@ -200,6 +218,7 @@ use Doctrine\Common\Cache\ApcCache;
 
         $em->remove($post);
         $em->flush();
+        $this->get('tagcloud')->check();
 
         return $this->render('AcmeBlogBundle:Default:post_delete.html.twig');
     }
@@ -229,9 +248,12 @@ use Doctrine\Common\Cache\ApcCache;
             }
         }
 
+        $tagcloudcall = $this->get('tagcloudcall')->check();
+
         return $this->render('AcmeBlogBundle:Default:post_tag.html.twig', [
             'form' => $form->createView(),
             'tags' => $tags,
+            'tagcloudcall' => $tagcloudcall,
         ]);
     }
 
@@ -252,12 +274,15 @@ use Doctrine\Common\Cache\ApcCache;
         $count = ceil($query->getSingleScalarResult() / $limit);
         $idp = 1;
 
+        $tagcloudcall = $this->get('tagcloudcall')->check();
+
         return $this->render('AcmeBlogBundle:Default:tag_posts.html.twig', [
             'tag' => $tag,
             'post' => $post,
             'count' => $count,
             'id' => $id,
             'idp' => $idp,
+            'tagcloudcall' => $tagcloudcall,
         ]);
     }
 
@@ -278,12 +303,15 @@ use Doctrine\Common\Cache\ApcCache;
         $query = $em->createQuery($dql);
         $count = ceil($query->getSingleScalarResult() / $limit);
 
+        $tagcloudcall = $this->get('tagcloudcall')->check();
+
         return $this->render('AcmeBlogBundle:Default:tag_posts_page.html.twig', [
             'tag' => $tag,
             'post' => $post,
             'count' => $count,
             'id' => $id,
             'idp' => $idp,
+            'tagcloudcall' => $tagcloudcall,
         ]);
     }
     public function tagcollectionAction()

@@ -167,7 +167,30 @@
                   <li><a href="{{ app.request.basePath }}/">Ссылка</a></li>
                   <li><a href="{{ app.request.basePath }}/">Ссылка</a></li>
                   <li class="nav-header">Облако тегов</li>
-                  <li>разные теги бла бла бла</li>
+                  <li>{% block tagcloud %}
+                          {% for tagcloudcall in tagcloudcall if tagcloudcall.count < 2 and tagcloudcall.count >0  %}
+                              <font size="1"><a href="{{ path('acme_blog_view_tag', {'id': tagcloudcall.id}) }}">{{ tagcloudcall.text }}</a></font>
+                          {% endfor %}
+                          {% for tagcloudcall in tagcloudcall if tagcloudcall.count > 1 and tagcloudcall.count < 5 %}
+                              <font size="3"><a href="{{ path('acme_blog_view_tag', {'id': tagcloudcall.id}) }}">{{ tagcloudcall.text }}</a></font>
+                          {% endfor %}
+
+                          {% for tagcloudcall in tagcloudcall if tagcloudcall.count > 4 and tagcloudcall.count < 10 %}
+                              <font size="5"><a href="{{ path('acme_blog_view_tag', {'id': tagcloudcall.id}) }}">{{ tagcloudcall.text }}</a></font>
+                          {% endfor %}
+
+                          {% for tagcloudcall in tagcloudcall if tagcloudcall.count > 9 and tagcloudcall.count < 15 %}
+                              <font size="7"><a href="{{ path('acme_blog_view_tag', {'id': tagcloudcall.id}) }}">{{ tagcloudcall.text }}</a></font>
+                          {% endfor %}
+
+                          {% for tagcloudcall in tagcloudcall if tagcloudcall.count > 14 and tagcloudcall.count < 30 %}
+                              <p><font size="9"><a href="{{ path('acme_blog_view_tag', {'id': tagcloudcall.id}) }}">{{ tagcloudcall.text }}</a></font></p>
+                          {% endfor %}
+
+                          {% for tagcloudcall in tagcloudcall if tagcloudcall.count > 30 %}
+                              <p><font size="5"><a href="{{ path('acme_blog_view_tag', {'id': tagcloudcall.id}) }}">{{ tagcloudcall.text }}</a></font></p>
+                          {% endfor %}
+                      {% endblock %}</li>
                   <li class="nav-header">3 блок</li>
                   <li>не помню для чего</li>
                 </ul>
