@@ -29,6 +29,11 @@ class Tag
      */
     protected $posts;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    protected $count;
+
     public function __construct($text = null)
     {
         $this->text = $text;
@@ -103,5 +108,28 @@ class Tag
     public function __toString()
     {
         return $this->getText();
+    }
+
+    /**
+     * Set count
+     *
+     * @param integer $count
+     * @return Tag
+     */
+    public function setCount($count)
+    {
+        $this->count = $count;
+    
+        return $this;
+    }
+
+    /**
+     * Get count
+     *
+     * @return integer 
+     */
+    public function getCount()
+    {
+        return $this->count;
     }
 }

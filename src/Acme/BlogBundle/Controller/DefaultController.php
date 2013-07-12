@@ -10,11 +10,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Acme\BlogBundle\Form\Type\PostFormType;
 use Acme\BlogBundle\Form\Type\TagFormType;
-use Doctrine\ORM\Tools\Pagination\Paginator;
 use Acme\BlogBundle\Form\Type\CommentFormType;
 use Doctrine\Common\Cache\ApcCache;
 
-class DefaultController extends Controller
+    class DefaultController extends Controller
 {
     public function indexAction()
     {
@@ -96,12 +95,6 @@ class DefaultController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $post = $em->find('AcmeBlogBundle:Post', $id);
-        $tags = $em->getRepository('AcmeBlogBundle:Tag')->findBy(
-            [],
-            ['id' => 'ASC'],
-            100,
-            0
-        );
 
         $form = $this->createForm(new PostFormType(), $post);
         if ($request->getMethod() == 'POST') {
@@ -111,8 +104,9 @@ class DefaultController extends Controller
                 $em->persist($form->getData());
                 $em->flush();
 
+
                 return $this->redirect($this->generateUrl(
-                    'acme_blog_post',
+                    'acme_blog_post_edit',
                     ['id' => $id]
                 ));
             }
@@ -212,6 +206,8 @@ class DefaultController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $tag = new Tag();
+
+
         $tags = $em->getRepository('AcmeBlogBundle:Tag')->findBy(
             [],
             ['id' => 'ASC'],
@@ -286,6 +282,20 @@ class DefaultController extends Controller
             'count' => $count,
             'id' => $id,
             'idp' => $idp,
+        ]);
+    }
+    public function tagcollectionAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $dql = "SELECT COUNT(a.id) FROM AcmeBlogBundle:Post u JOIN u.tags a";
+        $query = $em->createQuery($dql);
+
+        $count = $query->getResult();
+
+
+        return $this->render('AcmeBlogBundle:Default:tag_posts_page.html.twig', [
+            'counti' => $count,
         ]);
     }
 }

@@ -7,7 +7,7 @@ acme_blog_page:
     requirements:
         id:  \d+
 acme_blog_post:
-    pattern:  /post/{id}
+    pattern:  /post/{id}_{title}
     defaults: { _controller: AcmeBlogBundle:Default:post, id : 1 }
     requirements:
         id:  \d+
