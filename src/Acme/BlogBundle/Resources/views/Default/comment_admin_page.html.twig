@@ -19,12 +19,8 @@
             <div>
                 <table class="table">
                 <tr>
-                    <td width="200">
+                    <td width="500">
                         <h5><a href="{{ path('acme_blog_admin_comment', {'id': comment.id}) }}">Комментарий № {{ comment.id}}</a></h5>
-                    </td>
-
-                    <td width="200">
-                        <small>{{ comment.text }}</small>
                     </td>
 
                     <td>
@@ -39,7 +35,6 @@
         {% else %}
             Пока в блоге нет статей.
         {% endfor %}
-
 
         <div class="pagination">
             <ul>
@@ -78,13 +73,13 @@
                         {% endif %}
 
                     {% endif %}
-                    {{ count }}
+
                     {% if count > id %}
                         <li><a href="{{ app.request.basePath }}/admin/comments/page/{{ id + 1 }}">Next</a></li>
                     {% endif %}
                     <li><a href="{{ app.request.basePath }}/admin/comments/page/{{ count }}">End</a></li>
                 {% endif %}
-                {% endblock %}
+
 
             </ul>
         </div>
@@ -102,31 +97,30 @@
             <li><a href="{{ app.request.basePath }}/admin/">Админка</a></li>
             <li><a href="{{ app.request.basePath }}/admin/tag">Добавить теги</a></li>
             {% endif %}
-            <li><a href="{{ app.request.basePath }}/">Ссылка</a></li>
+            <li><a href="{{ path('acme_blog_admin_option') }}">Настройки</a></li>
             <li><a href="{{ app.request.basePath }}/">Ссылка</a></li>
 
             <li>{% block tagcloud %}
-
-                    {% for tagcloudcall in tagcloudcall if tagcloudcall.count <= mean / 2 and tagcloudcall.count >0  %}
+                    {% for tagcloudcall in tagcloudcall if tagcloudcall.count < 2 and tagcloudcall.count >0  %}
                         <font size="1"><a href="{{ path('acme_blog_view_tag', {'id': tagcloudcall.id}) }}">{{ tagcloudcall.text }}</a></font>
                     {% endfor %}
-                    {% for tagcloudcall in tagcloudcall if tagcloudcall.count >= mean and tagcloudcall.count <= mean * 2 %}
+                    {% for tagcloudcall in tagcloudcall if tagcloudcall.count > 1 and tagcloudcall.count < 5 %}
                         <font size="3"><a href="{{ path('acme_blog_view_tag', {'id': tagcloudcall.id}) }}">{{ tagcloudcall.text }}</a></font>
                     {% endfor %}
 
-                    {% for tagcloudcall in tagcloudcall if tagcloudcall.count > mean * 2 and tagcloudcall.count <= mean * 3 %}
+                    {% for tagcloudcall in tagcloudcall if tagcloudcall.count > 4 and tagcloudcall.count < 10 %}
                         <font size="5"><a href="{{ path('acme_blog_view_tag', {'id': tagcloudcall.id}) }}">{{ tagcloudcall.text }}</a></font>
                     {% endfor %}
 
-                    {% for tagcloudcall in tagcloudcall if tagcloudcall.count > mean * 3 and tagcloudcall.count <= mean * 4 %}
+                    {% for tagcloudcall in tagcloudcall if tagcloudcall.count > 9 and tagcloudcall.count < 15 %}
                         <font size="7"><a href="{{ path('acme_blog_view_tag', {'id': tagcloudcall.id}) }}">{{ tagcloudcall.text }}</a></font>
                     {% endfor %}
 
-                    {% for tagcloudcall in tagcloudcall if tagcloudcall.count > mean * 4 and tagcloudcall.count <= mean * 5 %}
+                    {% for tagcloudcall in tagcloudcall if tagcloudcall.count > 14 and tagcloudcall.count < 30 %}
                         <p><font size="9"><a href="{{ path('acme_blog_view_tag', {'id': tagcloudcall.id}) }}">{{ tagcloudcall.text }}</a></font></p>
                     {% endfor %}
 
-                    {% for tagcloudcall in tagcloudcall if tagcloudcall.count > mean * 5 %}
+                    {% for tagcloudcall in tagcloudcall if tagcloudcall.count > 30 %}
                         <p><font size="5"><a href="{{ path('acme_blog_view_tag', {'id': tagcloudcall.id}) }}">{{ tagcloudcall.text }}</a></font></p>
                     {% endfor %}
                 {% endblock %}</li>

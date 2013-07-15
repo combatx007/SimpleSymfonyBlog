@@ -78,7 +78,7 @@
             <li><a href="{{ app.request.basePath }}/admin/">Админка</a></li>
             <li><a href="{{ app.request.basePath }}/admin/tag">Добавить теги</a></li>
             {% endif %}
-            <li><a href="{{ app.request.basePath }}/">Ссылка</a></li>
+            <li><a href="{{ path('acme_blog_admin_option') }}">Настройки</a></li>
             <li><a href="{{ app.request.basePath }}/">Ссылка</a></li>
 
             <li>{% block tagcloud %}

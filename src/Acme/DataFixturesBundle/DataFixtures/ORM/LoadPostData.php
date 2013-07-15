@@ -9,6 +9,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\ContainerAware;
 use Acme\BlogBundle\Entity\Post;
 use Acme\UserBundle\Entity\User;
+use Acme\BlogBundle\Entity\Options;
 use Acme\BlogBundle\Entity\Comment;
 use FOS\UserBundle\Model\UserManager;
 
@@ -38,6 +39,13 @@ class LoadPostData extends ContainerAware implements FixtureInterface
         $user->setEnabled(true);
         $user->addRole('ROLE_DEFAULT');
         $manager->persist($user);
+
+        $option = new Options();
+        $option->setTitle('заголовок главной');
+        $option->setDescription('description главной');
+        $option->setCountpost('3');
+        $option->setCountadmin('10');
+        $manager->persist($option);
 
         $tag1 = new Tag('aaa', '0');
         $manager->persist($tag1);

@@ -61,6 +61,10 @@ acme_blog_admin_comments:
 
 acme_blog_admin_comments_page:
     pattern:  /admin/comments/page/{id}
-    defaults: { _controller: AcmeBlogBundle:Default:comments }
+    defaults: { _controller: AcmeBlogBundle:Default:commentspage }
+
+acme_blog_admin_option:
+    pattern:  /admin/option
+    defaults: { _controller: AcmeBlogBundle:Default:option }
 
 

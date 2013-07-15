@@ -5,6 +5,7 @@ namespace Acme\BlogBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Acme\BlogBundle\Entity\Post;
 use Acme\BlogBundle\Entity\Tag;
+use Acme\BlogBundle\Entity\Options;
 use Acme\BlogBundle\Entity\Comment;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -12,6 +13,7 @@ use Acme\BlogBundle\Form\Type\PostFormType;
 use Acme\BlogBundle\Form\Type\TagFormType;
 use Acme\BlogBundle\Form\Type\CommentFormType;
 use Acme\BlogBundle\Form\Type\CommentadminFormType;
+use Acme\BlogBundle\Form\Type\OptionFormType;
 
     class DefaultController extends Controller
 {
@@ -20,7 +22,7 @@ use Acme\BlogBundle\Form\Type\CommentadminFormType;
         $em = $this->getDoctrine()->getManager();
         $query = $em->createQuery('SELECT COUNT(p.id) FROM AcmeBlogBundle:Post p');
 
-        $limit = 3;
+        $limit = $this->get('options')->getOptions()->getCountpost();
         $count_pages = ceil($query->getSingleScalarResult() / $limit);
         $posts = $em->getRepository('AcmeBlogBundle:Post')->findBy(
             [],
@@ -29,6 +31,7 @@ use Acme\BlogBundle\Form\Type\CommentadminFormType;
             0
         );
 
+        $options = $this->get('options')->getOptions();
         $tagcloudcall = $this->get('tagcloudcall')->check();
         $mean = $this->get('tagcloud')->mean();
 
@@ -40,6 +43,7 @@ use Acme\BlogBundle\Form\Type\CommentadminFormType;
             'id' => '1',
             'tagcloudcall' => $tagcloudcall,
             'mean' => $mean,
+            'options' => $options,
         ]);
     }
 
@@ -48,7 +52,7 @@ use Acme\BlogBundle\Form\Type\CommentadminFormType;
         $em = $this->getDoctrine()->getManager();
         $query = $em->createQuery('SELECT COUNT(p.id) FROM AcmeBlogBundle:Post p');
 
-        $limit = 3;
+        $limit = $this->get('options')->getOptions()->getCountpost();
         $count_pages = ceil($query->getSingleScalarResult() / $limit);
         $offset = ($id - 1) * $limit;
 
@@ -185,7 +189,7 @@ use Acme\BlogBundle\Form\Type\CommentadminFormType;
         $em = $this->getDoctrine()->getManager();
         $query = $em->createQuery('SELECT COUNT(p.id) FROM AcmeBlogBundle:Post p');
 
-        $limit = 10;
+        $limit = $this->get('options')->getOptions()->getCountadmin();
         $count_pages = ceil($query->getSingleScalarResult() / $limit);
         $posts = $em->getRepository('AcmeBlogBundle:Post')->findBy(
             [],
@@ -211,7 +215,7 @@ use Acme\BlogBundle\Form\Type\CommentadminFormType;
         $em = $this->getDoctrine()->getManager();
         $query = $em->createQuery('SELECT COUNT(p.id) FROM AcmeBlogBundle:Post p');
 
-        $limit = 10;
+        $limit = $this->get('options')->getOptions()->getCountadmin();
         $count_pages = ceil($query->getSingleScalarResult() / $limit);
         $offset = ($id - 1) * $limit;
 
@@ -284,7 +288,7 @@ use Acme\BlogBundle\Form\Type\CommentadminFormType;
     {
         $em = $this->getDoctrine()->getManager();
         $tag = $em->find('AcmeBlogBundle:Tag', $id);
-        $limit = 3;
+        $limit = $this->get('options')->getOptions()->getCountpost();
         $dql = "SELECT u, a FROM AcmeBlogBundle:Post u JOIN u.tags a WHERE a.id = $id";
         $query = $em->createQuery($dql)
             ->setFirstResult(0)
@@ -315,7 +319,7 @@ use Acme\BlogBundle\Form\Type\CommentadminFormType;
     {
         $em = $this->getDoctrine()->getManager();
         $tag = $em->find('AcmeBlogBundle:Tag', $id);
-        $limit = 3;
+        $limit = $this->get('options')->getOptions()->getCountpost();
         $offset = ($idp - 1) * $limit;
         $dql = "SELECT u, a FROM AcmeBlogBundle:Post u JOIN u.tags a WHERE a.id = $id";
         $query = $em->createQuery($dql)
@@ -411,7 +415,7 @@ use Acme\BlogBundle\Form\Type\CommentadminFormType;
         $em = $this->getDoctrine()->getManager();
         $query = $em->createQuery('SELECT COUNT(p.id) FROM AcmeBlogBundle:Comment p');
 
-        $limit = 10;
+        $limit = $this->get('options')->getOptions()->getCountadmin();
         $count_pages = ceil($query->getSingleScalarResult() / $limit);
         $comments = $em->getRepository('AcmeBlogBundle:Comment')->findBy(
             [],
@@ -438,8 +442,9 @@ use Acme\BlogBundle\Form\Type\CommentadminFormType;
         $em = $this->getDoctrine()->getManager();
         $query = $em->createQuery('SELECT COUNT(p.id) FROM AcmeBlogBundle:Comment p');
 
-        $limit = 10;
+        $limit = $this->get('options')->getOptions()->getCountadmin();
         $offset = ($id - 1) * $limit;
+
         $count_pages = ceil($query->getSingleScalarResult() / $limit);
         $comments = $em->getRepository('AcmeBlogBundle:Comment')->findBy(
             [],
@@ -459,6 +464,45 @@ use Acme\BlogBundle\Form\Type\CommentadminFormType;
             'mean' => $mean,
         ]);
 
+    }
+
+    public function optionAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $dql = "SELECT u.id FROM AcmeBlogBundle:Options u";
+        $query = $em->createQuery($dql);
+
+        $id = $query->getResult();
+        $id = $id['0']['id'];
+
+
+        $option = $em->find('AcmeBlogBundle:Options', $id);
+
+        $form = $this->createForm(new OptionFormType(), $option);
+        if ($request->getMethod() == 'POST') {
+            $form->bind($request);
+
+            if ($form->isValid()) {
+                $em->persist($form->getData());
+                $em->flush();
+
+                return $this->redirect($this->generateUrl(
+                    'acme_blog_admin_option'
+                ));
+            }
+        }
+
+        $tagcloudcall = $this->get('tagcloudcall')->check();
+        $mean = $this->get('tagcloud')->mean();
+
+        return $this->render('AcmeBlogBundle:Default:option.html.twig', [
+            'tagcloudcall' => $tagcloudcall,
+            'mean' => $mean,
+            'form' => $form->createView(),
+            'option' => $option,
+            'id' => $id,
+        ]);
     }
 
 }
