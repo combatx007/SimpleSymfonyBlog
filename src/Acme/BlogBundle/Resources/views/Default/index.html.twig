@@ -1,10 +1,33 @@
 {% extends '::base.html.twig' %}
-
 {% block meta %}
-
    <meta charset="utf-8">
    <title>{% block title %}Simple-blog - простой блог на Symfony2{% endblock %}</title>
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <meta name="description" content="Описание главной">
    <meta name="author" content="">
 {% endblock %}
+{% block tagcloud %}
+
+        {% for tagcloudcall in tagcloudcall if tagcloudcall.count <= mean / 2 and tagcloudcall.count >0  %}
+            <font size="1"><a href="{{ path('acme_blog_view_tag', {'id': tagcloudcall.id}) }}">{{ tagcloudcall.text }}</a></font>
+        {% endfor %}
+        {% for tagcloudcall in tagcloudcall if tagcloudcall.count >= mean and tagcloudcall.count <= mean * 2 %}
+            <font size="3"><a href="{{ path('acme_blog_view_tag', {'id': tagcloudcall.id}) }}">{{ tagcloudcall.text }}</a></font>
+        {% endfor %}
+
+        {% for tagcloudcall in tagcloudcall if tagcloudcall.count > mean * 2 and tagcloudcall.count <= mean * 3 %}
+            <font size="5"><a href="{{ path('acme_blog_view_tag', {'id': tagcloudcall.id}) }}">{{ tagcloudcall.text }}</a></font>
+        {% endfor %}
+
+        {% for tagcloudcall in tagcloudcall if tagcloudcall.count > mean * 3 and tagcloudcall.count <= mean * 4 %}
+            <font size="7"><a href="{{ path('acme_blog_view_tag', {'id': tagcloudcall.id}) }}">{{ tagcloudcall.text }}</a></font>
+        {% endfor %}
+
+        {% for tagcloudcall in tagcloudcall if tagcloudcall.count > mean * 4 and tagcloudcall.count <= mean * 5 %}
+            <p><font size="9"><a href="{{ path('acme_blog_view_tag', {'id': tagcloudcall.id}) }}">{{ tagcloudcall.text }}</a></font></p>
+        {% endfor %}
+
+        {% for tagcloudcall in tagcloudcall if tagcloudcall.count > mean * 5 %}
+            <p><font size="5"><a href="{{ path('acme_blog_view_tag', {'id': tagcloudcall.id}) }}">{{ tagcloudcall.text }}</a></font></p>
+        {% endfor %}
+    {% endblock %}

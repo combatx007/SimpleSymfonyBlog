@@ -2,7 +2,7 @@
 
 {% block meta %}
     <meta charset="utf-8">
-    <title>{% block title %}Админцентр{% endblock %}</title>
+    <title>{% block title %}Админцентр|Редактирование комментариев{% endblock %}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="админцентр">
     <meta name="author" content="">
@@ -12,24 +12,26 @@
     <div class="span8">
 
         <div class="page-header">
-            <h1>Редактирование постов</h1>
+            <h1>Редактирование комментариев</h1>
         </div>
 
-        {% for post in posts %}
+        {% for comment in comments %}
             <div>
                 <table class="table">
                 <tr>
-                    <td width="500">
-                        <h5><a href="{{ app.request.basePath }}/post/{{ post.id }}">{{ post.title}}</a></h5>
+                    <td width="200">
+                        <h5><a href="{{ path('acme_blog_admin_comment', {'id': comment.id}) }}">Комментарий № {{ comment.id}}</a></h5>
+                    </td>
+
+                    <td width="200">
+                        <small>{{ comment.text }}</small>
                     </td>
 
                     <td>
-                        <a href="{{ app.request.basePath }}/post/edit/{{ post.id }}"><small>Редактировать</small></a>
+                        <a href="{{ path('acme_blog_admin_comment', {'id': comment.id}) }}"><small>Редактировать</small></a>
                     </td>
 
-                    <td>
-                        <a href="{{ app.request.basePath }}/post/delete/{{ post.id }}"><small>Удалить</small></a>
-                    </td>
+
                 </tr>
                 </table>
 
@@ -43,24 +45,21 @@
             <ul>
 
                 {% block pagination %}
-                    <li><a href="{{ app.request.basePath }}/admin/page/1">Start</a></li>
+                    {% if count < 5 %}
 
-                    {% if id not in [1] %}
-                        <li><a href="{{ app.request.basePath }}/admin/page/{{ id - 1 }}">Prev</a></li>
-                    {% endif %}
-
-                    {% if pages < 5 %}
-                        {% for i in 1..pages %}
-                            <li><a href="{{ app.request.basePath }}/admin/page/{{ i }}">{{ i }}</a></li>
+                        {% for i in 1..count %}
+                            <li><a href="{{ app.request.basePath }}/admin/comments/page/{{ i }}">{{ i }}</a></li>
                         {% endfor %}
+
                     {% else %}
                         {% for i in 1..5 %}
-                            <li><a href="{{ app.request.basePath }}/admin/page/{{ i }}">{{ i }}</a></li>
+                            <li><a href="{{ app.request.basePath }}/admin/comments/page/{{ i }}">{{ i }}</a></li>
                         {% endfor %}
+
                     {% endif %}
 
-                    <li><a href="{{ app.request.basePath }}/admin/page/{{ id + 1 }}">Next</a></li>
-                    <li><a href="{{ app.request.basePath }}/admin/page/{{ pages }}">End</a></li>
+                    <li><a href="{{ app.request.basePath }}/admin/comments/page/{{ id + 1 }}">Next</a></li>
+                    <li><a href="{{ app.request.basePath }}/admin/comments/page/{{ count }}">End</a></li>
                 {% endblock %}
 
             </ul>
@@ -79,7 +78,7 @@
             <li><a href="{{ app.request.basePath }}/admin/">Админка</a></li>
             <li><a href="{{ app.request.basePath }}/admin/tag">Добавить теги</a></li>
             {% endif %}
-            <li><a href="{{ path('acme_blog_admin_comments') }}">Редактировать комментарии</a></li>
+            <li><a href="{{ app.request.basePath }}/">Ссылка</a></li>
             <li><a href="{{ app.request.basePath }}/">Ссылка</a></li>
 
             <li>{% block tagcloud %}

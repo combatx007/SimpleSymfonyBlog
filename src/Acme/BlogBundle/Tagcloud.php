@@ -58,4 +58,28 @@ class Tagcloud {
             $result = $query->getResult();
         }
     }
+
+    public function mean()
+    {
+        $emm = $this->em;
+
+        $dql = "SELECT u.count FROM AcmeBlogBundle:Tag u";
+        $query = $emm->createQuery($dql);
+
+        $count_tag = $query->getResult();
+
+        $dql = "SELECT COUNT(u.id) FROM AcmeBlogBundle:Tag u";
+        $query = $emm->createQuery($dql);
+
+        $count = $query->getResult();
+        $amount = 0;
+
+        for ($k = 0; $k <= $count['0']['1']; $k++){
+            @$amount = $amount + $count_tag[$k]['count'];
+        }
+
+        $mean = ceil($amount / $count['0']['1']);
+
+        return $mean;
+    }
 }

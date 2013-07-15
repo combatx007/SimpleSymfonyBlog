@@ -86,3 +86,5 @@ services:
    tagcloudcall:
         class: Acme\BlogBundle\Tagcloudcall
         arguments: [ @doctrine.orm.entity_manager ]
+   translit:
+           class: Acme\BlogBundle\Transliteration

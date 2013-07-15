@@ -34,9 +34,10 @@ class Tag
      */
     protected $count;
 
-    public function __construct($text = null)
+    public function __construct($text = null, $count = '0')
     {
         $this->text = $text;
+        $this->count = $count;
     }
 
     /**

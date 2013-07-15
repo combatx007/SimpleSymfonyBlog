@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Acme\BlogBundle\Form\Type\PostFormType;
 use Acme\BlogBundle\Form\Type\TagFormType;
 use Acme\BlogBundle\Form\Type\CommentFormType;
+use Acme\BlogBundle\Form\Type\CommentadminFormType;
 
     class DefaultController extends Controller
 {
@@ -29,6 +30,7 @@ use Acme\BlogBundle\Form\Type\CommentFormType;
         );
 
         $tagcloudcall = $this->get('tagcloudcall')->check();
+        $mean = $this->get('tagcloud')->mean();
 
 
 
@@ -37,6 +39,7 @@ use Acme\BlogBundle\Form\Type\CommentFormType;
             'pages' => $count_pages,
             'id' => '1',
             'tagcloudcall' => $tagcloudcall,
+            'mean' => $mean,
         ]);
     }
 
@@ -57,21 +60,24 @@ use Acme\BlogBundle\Form\Type\CommentFormType;
         );
 
         $tagcloudcall = $this->get('tagcloudcall')->check();
+        $mean = $this->get('tagcloud')->mean();
 
         return $this->render('AcmeBlogBundle:Default:page.html.twig', [
             'posts' => $posts,
             'pages' => $count_pages,
             'id' => $id,
             'tagcloudcall' => $tagcloudcall,
+            'mean' => $mean,
         ]);
     }
 
-    public function postAction($id, Request $request)
+    public function postAction($id, $url, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
         /** @var Post $post */
         $post = $em->find('AcmeBlogBundle:Post', $id);
         $user = $this->get('security.context')->getToken()->getUser();
+
 
         $comment = new Comment();
         $form = $this->createForm(new CommentFormType(), $comment);
@@ -86,18 +92,21 @@ use Acme\BlogBundle\Form\Type\CommentFormType;
                 $comment->setPost($id);
                 $em->flush();
 
-                return $this->redirect($this->generateUrl('acme_blog_post', ['id' => $id]));
+                return $this->redirect($this->generateUrl('acme_blog_post', ['id' => $id, 'url' => $url]));
             }
         }
 
         $tagcloudcall = $this->get('tagcloudcall')->check();
+        $mean = $this->get('tagcloud')->mean();
 
         return $this->render('AcmeBlogBundle:Default:post.html.twig', [
             'post' => $post,
             'id' => $id,
+            'url' => $url,
             'form' => $form->createView(),
             'user' => $user,
             'tagcloudcall' => $tagcloudcall,
+            'mean' => $mean,
         ]);
     }
 
@@ -106,6 +115,7 @@ use Acme\BlogBundle\Form\Type\CommentFormType;
         $em = $this->getDoctrine()->getManager();
         $post = $em->find('AcmeBlogBundle:Post', $id);
 
+
         $form = $this->createForm(new PostFormType(), $post);
         if ($request->getMethod() == 'POST') {
             $form->bind($request);
@@ -113,22 +123,27 @@ use Acme\BlogBundle\Form\Type\CommentFormType;
             if ($form->isValid()) {
                 $em->persist($form->getData());
                 $em->flush();
+                $url = $this->get('translit')->fromUkrainianToEnglish($post->getTitle());
+                $post->setUrl($url);
                 $this->get('tagcloud')->check();
+                $em->flush();
 
 
                 return $this->redirect($this->generateUrl(
-                    'acme_blog_post_edit',
-                    ['id' => $id]
+                    'acme_blog_post',
+                    ['id' => $id, 'url' => $form->getData()->getUrl()]
                 ));
             }
         }
 
         $tagcloudcall = $this->get('tagcloudcall')->check();
+        $mean = $this->get('tagcloud')->mean();
 
         return $this->render('AcmeBlogBundle:Default:post_edit.html.twig', [
             'form' => $form->createView(),
             'id' => $id,
             'tagcloudcall' => $tagcloudcall,
+            'mean' => $mean,
         ]);
     }
 
@@ -144,6 +159,8 @@ use Acme\BlogBundle\Form\Type\CommentFormType;
 
             if ($form->isValid()) {
                 $em->persist($form->getData());
+                $url = $this->get('translit')->fromUkrainianToEnglish($form->getData()->getTitle());
+                $post->setUrl($url);
                 $em->flush();
                 $this->get('tagcloud')->check();
 
@@ -154,10 +171,12 @@ use Acme\BlogBundle\Form\Type\CommentFormType;
         }
 
         $tagcloudcall = $this->get('tagcloudcall')->check();
+        $mean = $this->get('tagcloud')->mean();
 
         return $this->render('AcmeBlogBundle:Default:post_add.html.twig', [
             'form' => $form->createView(),
             'tagcloudcall' => $tagcloudcall,
+            'mean' => $mean,
         ]);
     }
 
@@ -176,12 +195,14 @@ use Acme\BlogBundle\Form\Type\CommentFormType;
         );
 
         $tagcloudcall = $this->get('tagcloudcall')->check();
+        $mean = $this->get('tagcloud')->mean();
 
         return $this->render('AcmeBlogBundle:Default:admin.html.twig', [
             'posts' => $posts,
             'pages' => $count_pages,
             'id' => '1',
             'tagcloudcall' => $tagcloudcall,
+            'mean' => $mean,
         ]);
     }
 
@@ -249,11 +270,13 @@ use Acme\BlogBundle\Form\Type\CommentFormType;
         }
 
         $tagcloudcall = $this->get('tagcloudcall')->check();
+        $mean = $this->get('tagcloud')->mean();
 
         return $this->render('AcmeBlogBundle:Default:post_tag.html.twig', [
             'form' => $form->createView(),
             'tags' => $tags,
             'tagcloudcall' => $tagcloudcall,
+            'mean' => $mean,
         ]);
     }
 
@@ -275,6 +298,7 @@ use Acme\BlogBundle\Form\Type\CommentFormType;
         $idp = 1;
 
         $tagcloudcall = $this->get('tagcloudcall')->check();
+        $mean = $this->get('tagcloud')->mean();
 
         return $this->render('AcmeBlogBundle:Default:tag_posts.html.twig', [
             'tag' => $tag,
@@ -283,6 +307,7 @@ use Acme\BlogBundle\Form\Type\CommentFormType;
             'id' => $id,
             'idp' => $idp,
             'tagcloudcall' => $tagcloudcall,
+            'mean' => $mean,
         ]);
     }
 
@@ -304,6 +329,7 @@ use Acme\BlogBundle\Form\Type\CommentFormType;
         $count = ceil($query->getSingleScalarResult() / $limit);
 
         $tagcloudcall = $this->get('tagcloudcall')->check();
+        $mean = $this->get('tagcloud')->mean();
 
         return $this->render('AcmeBlogBundle:Default:tag_posts_page.html.twig', [
             'tag' => $tag,
@@ -312,8 +338,10 @@ use Acme\BlogBundle\Form\Type\CommentFormType;
             'id' => $id,
             'idp' => $idp,
             'tagcloudcall' => $tagcloudcall,
+            'mean' => $mean,
         ]);
     }
+
     public function tagcollectionAction()
     {
         $em = $this->getDoctrine()->getManager();
@@ -328,4 +356,109 @@ use Acme\BlogBundle\Form\Type\CommentFormType;
             'counti' => $count,
         ]);
     }
+
+    public function commentAction($id, Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $comment = $em->find('AcmeBlogBundle:Comment', $id);
+
+
+        $form = $this->createForm(new CommentadminFormType(), $comment);
+        if ($request->getMethod() == 'POST') {
+            $form->bind($request);
+
+            if ($form->isValid()) {
+                $em->persist($form->getData());
+                $em->flush();
+
+
+                return $this->redirect($this->generateUrl(
+                    'acme_blog_view_comment',
+                    ['id' => $id]
+                ));
+            }
+        }
+
+        $tagcloudcall = $this->get('tagcloudcall')->check();
+        $mean = $this->get('tagcloud')->mean();
+
+        return $this->render('AcmeBlogBundle:Default:comment_edit.html.twig', [
+            'form' => $form->createView(),
+            'id' => $id,
+            'tagcloudcall' => $tagcloudcall,
+            'mean' => $mean,
+        ]);
+    }
+
+    public function commentviewAction($id, Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $comment = $em->find('AcmeBlogBundle:Comment', $id);
+
+        $tagcloudcall = $this->get('tagcloudcall')->check();
+        $mean = $this->get('tagcloud')->mean();
+
+        return $this->render('AcmeBlogBundle:Default:comment.html.twig', [
+            'comment' => $comment,
+            'id' => $id,
+            'tagcloudcall' => $tagcloudcall,
+            'mean' => $mean,
+        ]);
+    }
+
+    public function commentsAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+        $query = $em->createQuery('SELECT COUNT(p.id) FROM AcmeBlogBundle:Comment p');
+
+        $limit = 10;
+        $count_pages = ceil($query->getSingleScalarResult() / $limit);
+        $comments = $em->getRepository('AcmeBlogBundle:Comment')->findBy(
+            [],
+            ['created' => 'DESC'],
+            $limit,
+            0
+        );
+
+        $tagcloudcall = $this->get('tagcloudcall')->check();
+        $mean = $this->get('tagcloud')->mean();
+
+        return $this->render('AcmeBlogBundle:Default:comment_admin.html.twig', [
+            'comments' => $comments,
+            'count' => $count_pages,
+            'id' => '1',
+            'tagcloudcall' => $tagcloudcall,
+            'mean' => $mean,
+        ]);
+
+    }
+
+    public function commentspageAction($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $query = $em->createQuery('SELECT COUNT(p.id) FROM AcmeBlogBundle:Comment p');
+
+        $limit = 10;
+        $offset = ($id - 1) * $limit;
+        $count_pages = ceil($query->getSingleScalarResult() / $limit);
+        $comments = $em->getRepository('AcmeBlogBundle:Comment')->findBy(
+            [],
+            ['created' => 'DESC'],
+            $limit,
+            $offset
+        );
+
+        $tagcloudcall = $this->get('tagcloudcall')->check();
+        $mean = $this->get('tagcloud')->mean();
+
+        return $this->render('AcmeBlogBundle:Default:comment_admin_page.html.twig', [
+            'comments' => $comments,
+            'id' => $id,
+            'count' => $count_pages,
+            'tagcloudcall' => $tagcloudcall,
+            'mean' => $mean,
+        ]);
+
+    }
+
 }

@@ -7,7 +7,7 @@ acme_blog_page:
     requirements:
         id:  \d+
 acme_blog_post:
-    pattern:  /post/{id}
+    pattern:  /post/{id}/{url}
     defaults: { _controller: AcmeBlogBundle:Default:post, id : 1 }
     requirements:
         id:  \d+
@@ -47,9 +47,20 @@ acme_blog_view_tag_page:
     pattern:  /post/tag/{id}/page/{idp}
     defaults: { _controller: AcmeBlogBundle:Default:tagspage, id:1, idp:1 }
 
-acme_blog_post_comment_page:
-    pattern:  /post/{id}/comment/{idp}
-    defaults: { _controller: AcmeBlogBundle:Default:comment, id:1, idp:1 }
+acme_blog_admin_comment:
+    pattern:  /admin/comment/{id}
+    defaults: { _controller: AcmeBlogBundle:Default:comment }
 
+acme_blog_view_comment:
+    pattern:  /admin/comment/view/{id}
+    defaults: { _controller: AcmeBlogBundle:Default:commentview }
+
+acme_blog_admin_comments:
+    pattern:  /admin/comments
+    defaults: { _controller: AcmeBlogBundle:Default:comments }
+
+acme_blog_admin_comments_page:
+    pattern:  /admin/comments/page/{id}
+    defaults: { _controller: AcmeBlogBundle:Default:comments }
 
 

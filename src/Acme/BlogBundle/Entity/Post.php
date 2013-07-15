@@ -64,6 +64,11 @@ class Post
     /**
      * @ORM\Column(type="text")
      */
+    protected $url;
+
+    /**
+     * @ORM\Column(type="text")
+     */
     protected $post;
 
     /**
@@ -364,5 +369,28 @@ class Post
         $this->created = $created;
     
         return $this;
+    }
+
+    /**
+     * Set url
+     *
+     * @param string $url
+     * @return Post
+     */
+    public function setUrl($url)
+    {
+        $this->url = $url;
+    
+        return $this;
+    }
+
+    /**
+     * Get url
+     *
+     * @return string 
+     */
+    public function getUrl()
+    {
+        return $this->url;
     }
 }
